@@ -7,12 +7,12 @@ import com.eden.orchid.api.options.TemplateGlobal;
 public class IndexGlobal implements TemplateGlobal<OrchidIndex> {
 
     @Override
-    public String key() {
+    public String key(Object page) {
         return "index";
     }
 
     @Override
-    public OrchidIndex get(OrchidContext context) {
+    public OrchidIndex get(OrchidContext context, Object page) {
         return context.getIndex();
     }
 }

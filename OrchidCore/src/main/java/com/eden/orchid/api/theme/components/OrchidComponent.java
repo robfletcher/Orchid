@@ -103,23 +103,25 @@ public abstract class OrchidComponent extends Prioritized implements OptionsHold
     }
 
     @Override
-    public final void addAssets() {
+    public final void addAssets(OrchidPage currentPage) {
         if(!hasAddedAssets) {
-            loadAssets();
-            OrchidUtils.addExtraAssetsTo(context, extraCss, extraJs, this, this, "component");
-            hasAddedAssets = true;
+            withPage(currentPage, () -> {
+                loadAssets();
+                OrchidUtils.addExtraAssetsTo(currentPage, context, extraCss, extraJs, this, this, "component");
+                hasAddedAssets = true;
+            });
         }
     }
 
     @Override
     public final List<AssetPage> getScripts() {
-        addAssets();
+        addAssets(page);
         return assetHolder.getScripts();
     }
 
     @Override
     public final List<AssetPage> getStyles() {
-        addAssets();
+        addAssets(page);
         return assetHolder.getStyles();
     }
 

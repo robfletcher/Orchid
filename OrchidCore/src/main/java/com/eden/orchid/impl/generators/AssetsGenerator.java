@@ -68,9 +68,11 @@ public final class AssetsGenerator extends OrchidGenerator {
 
         List<AssetHolder> assetHoldersToRender = new ArrayList<>();
         assetHoldersToRender.add(context.getGlobalAssetHolder());
-        assetHoldersToRender.add(context.getDefaultTheme());
+        //TODO: Find out how to get the Themes from here
+        assetHoldersToRender.add(context.findTheme());
         if (context.getTaskType() == TaskService.TaskType.SERVE) {
-            assetHoldersToRender.add(context.getDefaultAdminTheme());
+            //TODO: Find out how to get the AdminThemes from here
+            assetHoldersToRender.add(context.findAdminTheme());
         }
 
         for(AssetHolder holder : assetHoldersToRender) {

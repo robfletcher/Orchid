@@ -20,7 +20,6 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Consumer;
 
 public abstract class AbstractTheme extends PluginResourceSource implements OptionsHolder, AssetHolder {
 
@@ -50,8 +49,7 @@ public abstract class AbstractTheme extends PluginResourceSource implements Opti
 
     @Getter @Setter protected String preferredTemplateExtension;
 
-    private boolean isUsingCurrentPage;
-    private OrchidPage currentPage;
+    @Getter @Setter private OrchidPage currentPage;
 
     public AbstractTheme(OrchidContext context, String key, int priority) {
         super(context, priority);
@@ -70,12 +68,15 @@ public abstract class AbstractTheme extends PluginResourceSource implements Opti
 
     }
 
-    public final void addAssets() {
+    @Override
+    public final void addAssets(OrchidPage currentPage) {
         if(!hasAddedAssets) {
-            withNamespace(getKey() + "/" + Integer.toHexString(this.hashCode()), () -> {
-                loadAssets();
-                OrchidUtils.addExtraAssetsTo(context, extraCss, extraJs, this, this, "theme");
-            });
+            withPage(currentPage, () ->
+                withNamespace(getKey() + "/" + Integer.toHexString(this.hashCode()), () -> {
+                    loadAssets();
+                    OrchidUtils.addExtraAssetsTo(currentPage, context, extraCss, extraJs, this, this, "theme");
+                })
+            );
             hasAddedAssets = true;
         }
     }
@@ -98,7 +99,7 @@ public abstract class AbstractTheme extends PluginResourceSource implements Opti
 
     @Override
     public final List<AssetPage> getScripts() {
-        addAssets();
+        addAssets(currentPage);
         List<AssetPage> scripts = new ArrayList<>();
         scripts.addAll(assetHolder.getScripts());
         OrchidUtils.addComponentAssets(currentPage, getComponentHolders(), scripts, OrchidComponent::getScripts);
@@ -108,7 +109,7 @@ public abstract class AbstractTheme extends PluginResourceSource implements Opti
 
     @Override
     public final List<AssetPage> getStyles() {
-        addAssets();
+        addAssets(currentPage);
         List<AssetPage> styles = new ArrayList<>();
         styles.addAll(assetHolder.getStyles());
         OrchidUtils.addComponentAssets(currentPage, getComponentHolders(), styles, OrchidComponent::getStyles);
@@ -118,12 +119,6 @@ public abstract class AbstractTheme extends PluginResourceSource implements Opti
 
     protected ComponentHolder[] getComponentHolders() {
         return new ComponentHolder[] { };
-    }
-
-    public final void doWithCurrentPage(OrchidPage currentPage, Consumer<AbstractTheme> callback) {
-        this.currentPage = currentPage;
-        callback.accept(this);
-        this.currentPage = null;
     }
 
     @Override

@@ -16,60 +16,32 @@ public interface ThemeService extends OrchidService {
         return getService(ThemeService.class).getGlobalAssetHolder();
     }
 
-    default Theme getDefaultTheme() {
-        return getService(ThemeService.class).getDefaultTheme();
+    default Theme findTheme() {
+        return getService(ThemeService.class).findTheme();
     }
 
-    default Theme getTheme() {
-        return getService(ThemeService.class).getTheme();
+    default Theme findTheme(String themeKey) {
+        return getService(ThemeService.class).findTheme(themeKey);
     }
 
-    default Theme findTheme(String theme) {
-        return getService(ThemeService.class).findTheme(theme);
-    }
-
-    default void pushTheme(Theme theme) {
-        getService(ThemeService.class).pushTheme(theme);
-    }
-
-    default void pushTheme(Theme theme, JSONObject themeOptions) {
-        getService(ThemeService.class).pushTheme(theme, themeOptions);
-    }
-
-    default Theme doWithTheme(Object theme, Runnable cb) {
-        return getService(ThemeService.class).doWithTheme(theme, cb);
-    }
-
-    default void popTheme() {
-        getService(ThemeService.class).popTheme();
+    default Theme findTheme(String themeKey, JSONObject data) {
+        return getService(ThemeService.class).findTheme(themeKey, data);
     }
 
     default void clearThemes() {
         getService(ThemeService.class).clearThemes();
     }
 
-    default AdminTheme getDefaultAdminTheme() {
-        return getService(ThemeService.class).getDefaultAdminTheme();
+    default AdminTheme findAdminTheme() {
+        return getService(ThemeService.class).findAdminTheme();
     }
 
-    default AdminTheme getAdminTheme() {
-        return getService(ThemeService.class).getAdminTheme();
+    default AdminTheme findAdminTheme(String themeKey) {
+        return getService(ThemeService.class).findAdminTheme(themeKey);
     }
 
-    default AdminTheme findAdminTheme(String theme) {
-        return getService(ThemeService.class).findAdminTheme(theme);
-    }
-
-    default void pushAdminTheme(AdminTheme theme) {
-        getService(ThemeService.class).pushAdminTheme(theme);
-    }
-
-    default void pushAdminTheme(AdminTheme theme, JSONObject themeOptions) {
-        getService(ThemeService.class).pushAdminTheme(theme, themeOptions);
-    }
-
-    default void popAdminTheme() {
-        getService(ThemeService.class).popAdminTheme();
+    default AdminTheme findAdminTheme(String themeKey, JSONObject data) {
+        return getService(ThemeService.class).findAdminTheme(themeKey, data);
     }
 
     default void clearAdminThemes() {

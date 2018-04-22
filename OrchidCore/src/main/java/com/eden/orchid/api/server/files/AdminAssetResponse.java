@@ -22,7 +22,8 @@ public final class AdminAssetResponse {
     }
 
     public OrchidResponse getResponse(File targetFile, String targetPath) {
-        AdminTheme theme = context.getAdminTheme();
+        //TODO: Find out how to get the View from here
+        AdminTheme theme = context.findAdminTheme();
 
         OrchidResource res = theme.getResourceEntry(targetPath);
         String mimeType = StaticFileResponse.mimeTypes.getOrDefault(FilenameUtils.getExtension(targetFile.getName()), "text/plain");

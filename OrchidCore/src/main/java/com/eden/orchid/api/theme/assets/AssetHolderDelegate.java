@@ -27,6 +27,7 @@ public final class AssetHolderDelegate implements AssetHolder {
     private String sourceKey;
 
     private String prefix;
+    private OrchidPage currentPage;
 
     @Inject
     public AssetHolderDelegate(OrchidContext context, Object source, String sourceKey) {
@@ -38,7 +39,7 @@ public final class AssetHolderDelegate implements AssetHolder {
     }
 
     @Override
-    public void addAssets() {
+    public void addAssets(OrchidPage currentPage) {
         throw new UnsupportedOperationException("AssetHolderDelegate cannot add its own assets");
     }
 
@@ -67,7 +68,7 @@ public final class AssetHolderDelegate implements AssetHolder {
 
     @Override
     public AssetPage addJs(String jsAsset) {
-        OrchidResource resource = context.getResourceEntry(jsAsset);
+        OrchidResource resource = context.getResourceEntry(currentPage, jsAsset);
         if(resource != null) {
             boolean setPrefix = !EdenUtils.isEmpty(prefix);
             if(resource instanceof ExternalResource) {
@@ -111,7 +112,7 @@ public final class AssetHolderDelegate implements AssetHolder {
 
     @Override
     public AssetPage addCss(String cssAsset) {
-        OrchidResource resource = context.getResourceEntry(cssAsset);
+        OrchidResource resource = context.getResourceEntry(currentPage, cssAsset);
         if(resource != null) {
             boolean setPrefix = !EdenUtils.isEmpty(prefix);
             if(resource instanceof ExternalResource) {
@@ -174,5 +175,11 @@ public final class AssetHolderDelegate implements AssetHolder {
         prefix = OrchidUtils.normalizePath(namespace);
         cb.run();
         prefix = null;
+    }
+
+    public void withPage(OrchidPage currentPage, Runnable cb) {
+        this.currentPage = currentPage;
+        cb.run();
+        this.currentPage = null;
     }
 }

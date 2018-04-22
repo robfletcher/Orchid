@@ -4,17 +4,21 @@ import com.caseyjbrooks.clog.Clog;
 import com.eden.orchid.api.OrchidContext;
 import com.eden.orchid.api.options.OptionsExtractor;
 import com.eden.orchid.api.options.OptionsHolder;
+import com.eden.orchid.api.options.annotations.Option;
 import com.eden.orchid.api.resources.resource.OrchidResource;
 import com.eden.orchid.api.server.admin.AdminList;
 import com.eden.orchid.api.tasks.OrchidCommand;
 import com.eden.orchid.api.tasks.OrchidTask;
+import com.eden.orchid.api.theme.AdminTheme;
 import com.eden.orchid.api.theme.assets.AssetHolder;
 import com.eden.orchid.api.theme.assets.AssetHolderDelegate;
 import com.eden.orchid.api.theme.assets.AssetPage;
+import com.eden.orchid.api.theme.pages.OrchidPage;
 import com.eden.orchid.utilities.OrchidUtils;
 import com.google.inject.Provider;
 import lombok.Getter;
 import lombok.Setter;
+import org.json.JSONObject;
 
 import javax.inject.Inject;
 import java.net.URLEncoder;
@@ -36,6 +40,7 @@ public class OrchidView implements OptionsHolder, AssetHolder {
 
     @Getter private final OrchidContext context;
     @Getter private final OrchidController controller;
+    @Option @Getter @Setter private AdminTheme theme;
 
     @Getter @Setter protected AssetHolder assets;
     private boolean hasAddedAssets;
@@ -85,10 +90,12 @@ public class OrchidView implements OptionsHolder, AssetHolder {
         return assets;
     }
 
-    public final void addAssets() {
+    public final void addAssets(OrchidPage currentPage) {
         if(!hasAddedAssets) {
-            loadAssets();
-            hasAddedAssets = true;
+            withPage(currentPage, () -> {
+                loadAssets();
+                hasAddedAssets = true;
+            });
         }
     }
 
@@ -98,9 +105,9 @@ public class OrchidView implements OptionsHolder, AssetHolder {
 
     @Override
     public final List<AssetPage> getScripts() {
-        addAssets();
+        addAssets(null);
         List<AssetPage> scripts = new ArrayList<>();
-        scripts.addAll(context.getAdminTheme().getScripts());
+        scripts.addAll(theme.getScripts());
         scripts.addAll(assets.getScripts());
 
         return scripts;
@@ -108,9 +115,9 @@ public class OrchidView implements OptionsHolder, AssetHolder {
 
     @Override
     public final List<AssetPage> getStyles() {
-        addAssets();
+        addAssets(null);
         List<AssetPage> styles = new ArrayList<>();
-        styles.addAll(context.getAdminTheme().getStyles());
+        styles.addAll(theme.getStyles());
         styles.addAll(assets.getStyles());
 
         return styles;
@@ -124,7 +131,7 @@ public class OrchidView implements OptionsHolder, AssetHolder {
                 .map(s -> Clog.format("templates/server/admin/{}.peb", OrchidUtils.normalizePath(s)))
                 .collect(Collectors.toList());
 
-        OrchidResource resource = context.locateTemplate(viewList);
+        OrchidResource resource = context.locateTemplate(null, viewList);
         if(resource != null) {
             Map<String, Object> data = new HashMap<>();
             data.put("view", this);
@@ -132,13 +139,15 @@ public class OrchidView implements OptionsHolder, AssetHolder {
             data.put("cxt", context);
             data.put("httpServerPort", server.get().getHttpServerPort());
             data.put("websocketPort", server.get().getWebsocketPort());
-            data.put("adminTheme", context.getAdminTheme());
+            data.put("adminTheme", theme);
             data.put("site", context.getSite());
             data.put("optionsExtractor", context.getInjector().getInstance(OptionsExtractor.class));
 
             if (this.data != null) {
                 data.putAll(this.data);
             }
+
+            this.extractOptions(context, new JSONObject());
 
             return context.compile(resource.getReference().getExtension(), resource.getContent(), data);
         }

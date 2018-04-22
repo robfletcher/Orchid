@@ -24,7 +24,7 @@ public final class SassImporter implements Importer {
     public Collection<Import> apply(String url, Import previous) {
         EdenPair<String, String> thisItem = splitPath(url);
 
-        String[] availableFiles = new String[]{
+        String[] availableFiles = new String[] {
                 thisItem.first + "/" + thisItem.second + ".scss",
                 thisItem.first + "/" + thisItem.second + ".sass",
                 thisItem.first + "/" + "_" + thisItem.second + ".scss",

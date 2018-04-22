@@ -91,7 +91,8 @@ public final class IndexFileResponse {
 
                 JSONObject object = new JSONObject(context.getOptionsData().toMap());
                 object.put("page", indexPageVars);
-                object.put("theme", context.getTheme());
+                //TODO: Find out how to get the Page from here
+//                object.put("theme", context.getTheme());
 
                 String directoryListingContent;
                 if (resource != null) {

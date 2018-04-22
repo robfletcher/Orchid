@@ -39,14 +39,6 @@ constructor(
         val extractor: OptionsExtractor
 ) : OrchidGenerator(context, "netlifyCms", OrchidGenerator.PRIORITY_DEFAULT) {
 
-    override fun setTheme(theme: Any?) {
-
-    }
-
-    override fun getTheme(): Any {
-        return "Default"
-    }
-
     @Option
     @Description("Arbitrary config options to add to the main CMS config file.")
     lateinit var config: JSONObject

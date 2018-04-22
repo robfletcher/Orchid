@@ -8,12 +8,13 @@ import java.util.Map;
 public class ConfigGlobal implements TemplateGlobal<Map<String, Object>> {
 
     @Override
-    public String key() {
+    public String key(Object page) {
         return "config";
     }
 
     @Override
-    public Map<String, Object> get(OrchidContext context) {
+    public Map<String, Object> get(OrchidContext context, Object page) {
         return context.getOptionsData().toMap();
     }
+
 }

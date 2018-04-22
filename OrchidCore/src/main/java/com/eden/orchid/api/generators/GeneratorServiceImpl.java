@@ -10,7 +10,6 @@ import com.eden.orchid.api.options.annotations.BooleanDefault;
 import com.eden.orchid.api.options.annotations.Description;
 import com.eden.orchid.api.options.annotations.Option;
 import com.eden.orchid.api.resources.resource.FreeableResource;
-import com.eden.orchid.api.theme.Theme;
 import com.eden.orchid.api.theme.pages.OrchidPage;
 import com.eden.orchid.utilities.OrchidUtils;
 import lombok.Getter;
@@ -191,12 +190,7 @@ public final class GeneratorServiceImpl implements GeneratorService {
         }
 
         Stream<? extends OrchidPage> generatorPagesStream = generator.isParallel() ? generatorPages.parallelStream() : generatorPages.stream();
-
-        Theme customTheme = context.doWithTheme(generator.getTheme(), () -> generator.startGeneration(generatorPagesStream));
-        if(customTheme != null) {
-            Clog.i("[{}] Generator pages rendered with [{}] Theme.", generator.getKey(), customTheme.getKey());
-        }
-
+        generator.startGeneration(generatorPagesStream);
         metrics.stopGeneratingGenerator(generator.getKey());
     }
 

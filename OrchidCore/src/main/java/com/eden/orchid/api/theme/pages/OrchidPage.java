@@ -57,6 +57,11 @@ public class OrchidPage implements OptionsHolder, AssetHolder {
 
     @Getter @Setter
     @Option
+    @Description("The theme to use when rendering this page.")
+    protected Theme theme;
+
+    @Getter @Setter
+    @Option
     @Description("Specify a custom title for this Page, which takes precedence over the title given by its generator.")
     protected String title;
 
@@ -245,14 +250,9 @@ public class OrchidPage implements OptionsHolder, AssetHolder {
     public String getContent() {
         if (resource != null && !EdenUtils.isEmpty(resource.getContent())) {
             return resource.compileContent(this);
-        }
-        else {
+        } else {
             return "";
         }
-    }
-
-    public Theme getTheme() {
-        return context.getTheme();
     }
 
     public boolean shouldRender() {
@@ -339,9 +339,10 @@ public class OrchidPage implements OptionsHolder, AssetHolder {
 
     @Override
     public final List<AssetPage> getScripts() {
-        addAssets();
+        addAssets(this);
         List<AssetPage> scripts = new ArrayList<>();
-        context.getTheme().doWithCurrentPage(this, (theme) -> scripts.addAll(context.getTheme().getScripts()));
+        theme.setCurrentPage(this);
+        scripts.addAll(theme.getScripts());
         scripts.addAll(assets.getScripts());
         OrchidUtils.addComponentAssets(this, getComponentHolders(), scripts, OrchidComponent::getScripts);
 
@@ -350,20 +351,24 @@ public class OrchidPage implements OptionsHolder, AssetHolder {
 
     @Override
     public final List<AssetPage> getStyles() {
-        addAssets();
+        addAssets(this);
         List<AssetPage> styles = new ArrayList<>();
-        context.getTheme().doWithCurrentPage(this, (theme) -> styles.addAll(context.getTheme().getStyles()));
+        theme.setCurrentPage(this);
+        styles.addAll(theme.getStyles());
         styles.addAll(assets.getStyles());
         OrchidUtils.addComponentAssets(this, getComponentHolders(), styles, OrchidComponent::getStyles);
 
         return styles;
     }
 
-    public final void addAssets() {
+    @Override
+    public final void addAssets(OrchidPage currentPage) {
         if(!hasAddedAssets) {
-            loadAssets();
-            OrchidUtils.addExtraAssetsTo(context, extraCss, extraJs, this, this, "page");
-            hasAddedAssets = true;
+            withPage(currentPage, () -> {
+                loadAssets();
+                OrchidUtils.addExtraAssetsTo(currentPage, context, extraCss, extraJs, this, this, "page");
+                hasAddedAssets = true;
+            });
         }
     }
 

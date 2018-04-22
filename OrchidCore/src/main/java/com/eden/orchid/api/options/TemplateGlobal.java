@@ -11,8 +11,8 @@ import com.eden.orchid.api.OrchidContext;
  */
 public interface TemplateGlobal<T> {
 
-    String key();
+    String key(Object page);
 
-    T get(OrchidContext context);
+    T get(OrchidContext context, Object page);
 
 }

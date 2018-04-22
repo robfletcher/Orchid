@@ -168,32 +168,6 @@ public final class GeneratorServiceTest {
     }
 
     @Test
-    public void testGeneratorThemes() throws Throwable {
-        underTest.startIndexing();
-        underTest.startGeneration();
-        verify(context, never()).pushTheme(any());
-        clearInvocations(context);
-
-        generator1.setTheme("theme1");
-        underTest.startIndexing();
-        underTest.startGeneration();
-        verify(context, times(3)).doWithTheme(any(), any());
-        clearInvocations(context);
-
-        generator2.setTheme("theme1");
-        underTest.startIndexing();
-        underTest.startGeneration();
-        verify(context, times(3)).doWithTheme(any(), any());
-        clearInvocations(context);
-
-        generator3.setTheme("theme1");
-        underTest.startIndexing();
-        underTest.startGeneration();
-        verify(context, times(3)).doWithTheme(any(), any());
-        clearInvocations(context);
-    }
-
-    @Test
     public void testFreeableResourcesFreed() throws Throwable {
         underTest.startIndexing();
         underTest.startGeneration();

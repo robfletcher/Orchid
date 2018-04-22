@@ -60,7 +60,8 @@ public final class DefaultTemplateResolutionStrategy extends TemplateResolutionS
     }
 
     public List<String> expandTemplateList(final List<String> templates, final String templateBase) {
-        String themePreferredExtension = context.get().getTheme().getPreferredTemplateExtension();
+        //TODO: Find out how to get the Page from here
+        String themePreferredExtension = context.get().findTheme().getPreferredTemplateExtension();
         String defaultExtension = context.get().getSite().getDefaultTemplateExtension();
 
         return templates

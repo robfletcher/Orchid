@@ -9,6 +9,7 @@ import com.eden.orchid.api.resources.resource.OrchidResource;
 import com.eden.orchid.api.resources.resourceSource.FileResourceSource;
 import com.eden.orchid.api.resources.resourceSource.OrchidResourceSource;
 import com.eden.orchid.api.resources.resourceSource.PluginResourceSource;
+import com.eden.orchid.api.theme.pages.OrchidPage;
 import com.eden.orchid.api.theme.pages.OrchidReference;
 import com.eden.orchid.utilities.OrchidUtils;
 import com.google.inject.name.Named;
@@ -157,12 +158,12 @@ public final class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public OrchidResource getThemeResourceEntry(final String fileName) {
-        return context.getTheme().getResourceEntry(fileName);
+    public OrchidResource getResourceEntry(final String fileName) {
+        return getResourceEntry(null, fileName);
     }
 
     @Override
-    public OrchidResource getResourceEntry(final String fileName) {
+    public OrchidResource getResourceEntry(OrchidPage page, final String fileName) {
         OrchidResource resource = null;
 
         // If the fileName looks like an external resource, return a Resource pointing to that resource
@@ -176,9 +177,14 @@ public final class ResourceServiceImpl implements ResourceService {
             resource = getLocalResourceEntry(fileName);
         }
 
-        // If nothing found in local resources, check the theme
+        // If not external, check for a resource in any specified local resource sources
         if (resource == null) {
-            resource = getThemeResourceEntry(fileName);
+            if(page != null) {
+                resource = page.getTheme().getResourceEntry(fileName);
+            }
+            else {
+                resource = context.findTheme().getResourceEntry(fileName);
+            }
         }
 
         // If nothing found in the theme, check the default resource sources
@@ -208,27 +214,24 @@ public final class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public List<OrchidResource> getThemeResourceEntries(String path, String[] fileExtensions, boolean recursive) {
-        TreeMap<String, OrchidResource> entries = new TreeMap<>();
-
-        List<OrchidResourceSource> themeSources = new ArrayList<>();
-        themeSources.add(context.getTheme());
-        addEntries(entries, themeSources, path, fileExtensions, recursive);
-
-        return new ArrayList<>(entries.values());
+    public List<OrchidResource> getResourceEntries(String path, String[] fileExtensions, boolean recursive) {
+        return getResourceEntries(null, path, fileExtensions, recursive);
     }
 
     @Override
-    public List<OrchidResource> getResourceEntries(String path, String[] fileExtensions, boolean recursive) {
+    public List<OrchidResource> getResourceEntries(OrchidPage page, String path, String[] fileExtensions, boolean recursive) {
         TreeMap<String, OrchidResource> entries = new TreeMap<>();
 
         // add entries from local sources
         addEntries(entries, fileResourceSources, path, fileExtensions, recursive);
 
         // add entries from theme
-        List<OrchidResourceSource> themeSources = new ArrayList<>();
-        themeSources.add(context.getTheme());
-        addEntries(entries, themeSources, path, fileExtensions, recursive);
+        if(page != null) {
+            addEntries(entries, Collections.singletonList(page.getTheme()), path, fileExtensions, recursive);
+        }
+        else {
+            addEntries(entries, Collections.singletonList(context.findTheme()), path, fileExtensions, recursive);
+        }
 
         // add entries from other sources
         addEntries(entries, pluginResourceSources, path, fileExtensions, recursive);
@@ -368,7 +371,6 @@ public final class ResourceServiceImpl implements ResourceService {
         return null;
     }
 
-
 // Find first matching resource
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -410,45 +412,42 @@ public final class ResourceServiceImpl implements ResourceService {
         return context.getResourceEntry(fullFileName);
     }
 
-
-
-
     @Override
-    public OrchidResource locateTemplate(String fileNames) {
+    public OrchidResource locateTemplate(OrchidPage page, String fileNames) {
         if(fileNames.startsWith("?")) {
-            return locateTemplate(StringUtils.stripStart(fileNames, "?"), true);
+            return locateTemplate(page, StringUtils.stripStart(fileNames, "?"), true);
         }
         else {
-            return locateTemplate(fileNames, false);
+            return locateTemplate(page, fileNames, false);
         }
     }
 
     @Override
-    public OrchidResource locateTemplate(final String[] fileNames) {
-        return locateTemplate(fileNames, true);
+    public OrchidResource locateTemplate(OrchidPage page, final String[] fileNames) {
+        return locateTemplate(page, fileNames, true);
     }
 
     @Override
-    public OrchidResource locateTemplate(List<String> fileNames) {
-        return locateTemplate(fileNames, true);
+    public OrchidResource locateTemplate(OrchidPage page, List<String> fileNames) {
+        return locateTemplate(page, fileNames, true);
     }
 
     @Override
-    public OrchidResource locateTemplate(String fileNames, boolean ignoreMissing) {
-        return locateTemplate(fileNames.split(","), ignoreMissing);
+    public OrchidResource locateTemplate(OrchidPage page, String fileNames, boolean ignoreMissing) {
+        return locateTemplate(page, fileNames.split(","), ignoreMissing);
     }
 
     @Override
-    public OrchidResource locateTemplate(final String[] fileNames, boolean ignoreMissing) {
+    public OrchidResource locateTemplate(OrchidPage page, final String[] fileNames, boolean ignoreMissing) {
         List<String> fileNamesList = new ArrayList<>();
         Collections.addAll(fileNamesList, fileNames);
-        return locateTemplate(fileNamesList, ignoreMissing);
+        return locateTemplate(page, fileNamesList, ignoreMissing);
     }
 
     @Override
-    public OrchidResource locateTemplate(final List<String> fileNames, boolean ignoreMissing) {
+    public OrchidResource locateTemplate(OrchidPage page, final List<String> fileNames, boolean ignoreMissing) {
         for(String template : fileNames) {
-            OrchidResource resource = locateSingleTemplate(template);
+            OrchidResource resource = locateSingleTemplate(page, template);
             if(resource != null) {
                 return resource;
             }
@@ -462,17 +461,22 @@ public final class ResourceServiceImpl implements ResourceService {
         }
     }
 
-    private OrchidResource locateSingleTemplate(String templateName) {
+    private OrchidResource locateSingleTemplate(OrchidPage page, String templateName) {
         String fullFileName = OrchidUtils.normalizePath(OrchidUtils.normalizePath(templateName));
 
         if(!fullFileName.startsWith("templates/")) {
             fullFileName = "templates/" + fullFileName;
         }
         if(!fullFileName.contains(".")) {
-            fullFileName = fullFileName + "." + context.getTheme().getPreferredTemplateExtension();
+            if(page != null) {
+                fullFileName = fullFileName + "." + page.getTheme().getPreferredTemplateExtension();
+            }
+            else {
+                fullFileName = fullFileName + ".peb";
+            }
         }
 
-        return context.getResourceEntry(fullFileName);
+        return getResourceEntry(page, fullFileName);
     }
 
 }

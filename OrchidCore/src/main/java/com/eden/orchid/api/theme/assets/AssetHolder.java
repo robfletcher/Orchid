@@ -1,15 +1,21 @@
 package com.eden.orchid.api.theme.assets;
 
+import com.eden.orchid.api.theme.pages.OrchidPage;
+
 import java.util.List;
 
 public interface AssetHolder {
 
     AssetHolder getAssetHolder();
 
-    void addAssets();
+    void addAssets(OrchidPage currentPage);
 
     default void withNamespace(String namespace, Runnable cb) {
         getAssetHolder().withNamespace(namespace, cb);
+    }
+
+    default void withPage(OrchidPage currentPage, Runnable cb) {
+        getAssetHolder().withPage(currentPage, cb);
     }
 
     default AssetPage addJs(AssetPage jsAsset) {
@@ -51,4 +57,5 @@ public interface AssetHolder {
     default boolean shouldDownloadExternalAssets() {
         return getAssetHolder().shouldDownloadExternalAssets();
     }
+
 }

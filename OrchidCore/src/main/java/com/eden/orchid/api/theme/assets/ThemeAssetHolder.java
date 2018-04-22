@@ -28,6 +28,8 @@ public final class ThemeAssetHolder implements AssetHolder {
 
     private String prefix;
 
+    private OrchidPage currentPage;
+
     @Inject
     public ThemeAssetHolder(OrchidContext context, AbstractTheme theme) {
         this.context = context;
@@ -42,7 +44,7 @@ public final class ThemeAssetHolder implements AssetHolder {
     }
 
     @Override
-    public void addAssets() {
+    public void addAssets(OrchidPage currentPage) {
         throw new UnsupportedOperationException("ThemeAssetHolder cannot add its own assets");
     }
 
@@ -66,7 +68,7 @@ public final class ThemeAssetHolder implements AssetHolder {
     @Override
     public AssetPage addJs(String jsAsset) {
         OrchidResource resource;
-        resource = context.getResourceEntry(jsAsset);
+        resource = context.getResourceEntry(currentPage, jsAsset);
 
         if(resource != null) {
             boolean setPrefix = !EdenUtils.isEmpty(prefix);
@@ -112,12 +114,8 @@ public final class ThemeAssetHolder implements AssetHolder {
     @Override
     public AssetPage addCss(String cssAsset) {
         OrchidResource resource;
-        if(OrchidUtils.isExternal(cssAsset)) {
-            resource = context.getResourceEntry(cssAsset);
-        }
-        else {
-            resource = context.getResourceEntry(cssAsset);
-        }
+        resource = context.getResourceEntry(currentPage, cssAsset);
+
         if(resource != null) {
             boolean setPrefix = !EdenUtils.isEmpty(prefix);
             if(resource instanceof ExternalResource) {
@@ -180,5 +178,11 @@ public final class ThemeAssetHolder implements AssetHolder {
         prefix = OrchidUtils.normalizePath(namespace);
         cb.run();
         prefix = null;
+    }
+
+    public void withPage(OrchidPage currentPage, Runnable cb) {
+        this.currentPage = currentPage;
+        cb.run();
+        this.currentPage = null;
     }
 }

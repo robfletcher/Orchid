@@ -18,6 +18,7 @@ import com.eden.orchid.api.options.Extractor;
 import com.eden.orchid.api.options.OptionExtractor;
 import com.eden.orchid.api.options.OptionsExtractor;
 import com.eden.orchid.api.options.TemplateGlobal;
+import com.eden.orchid.api.options.extractors.AdminThemeOptionExtractor;
 import com.eden.orchid.api.options.extractors.AnyOptionExtractor;
 import com.eden.orchid.api.options.extractors.ArrayOptionExtractor;
 import com.eden.orchid.api.options.extractors.BooleanOptionExtractor;
@@ -34,7 +35,9 @@ import com.eden.orchid.api.options.extractors.ModularListOptionExtractor;
 import com.eden.orchid.api.options.extractors.OptionsHolderOptionExtractor;
 import com.eden.orchid.api.options.extractors.RelationOptionExtractor;
 import com.eden.orchid.api.options.extractors.StringOptionExtractor;
+import com.eden.orchid.api.options.extractors.ThemeOptionExtractor;
 import com.eden.orchid.api.options.extractors.TimeOptionExtractor;
+import com.eden.orchid.api.options.globals.AssetSourceGlobal;
 import com.eden.orchid.api.options.globals.ConfigGlobal;
 import com.eden.orchid.api.options.globals.IndexGlobal;
 import com.eden.orchid.api.options.globals.SiteGlobal;
@@ -81,6 +84,8 @@ public final class ApiModule extends OrchidModule {
                 ModularListOptionExtractor.class,
                 OptionsHolderOptionExtractor.class,
                 RelationOptionExtractor.class,
+                ThemeOptionExtractor.class,
+                AdminThemeOptionExtractor.class,
 
                 AnyOptionExtractor.class,
                 ArrayOptionExtractor.class,
@@ -103,7 +108,8 @@ public final class ApiModule extends OrchidModule {
                 ConfigGlobal.class,
                 IndexGlobal.class,
                 SiteGlobal.class,
-                ThemeGlobal.class);
+                ThemeGlobal.class,
+                AssetSourceGlobal.class);
 
         // Permalink Path Types
         addToSet(PermalinkPathType.class,

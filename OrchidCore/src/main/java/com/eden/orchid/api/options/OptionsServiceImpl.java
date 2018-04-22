@@ -101,7 +101,10 @@ public final class OptionsServiceImpl implements OptionsService {
         }
 
         for(TemplateGlobal global : globals) {
-            siteData.put(global.key(), global.get(context));
+            String key = global.key(data);
+            if(!EdenUtils.isEmpty(key)) {
+                siteData.put(key, global.get(context, data));
+            }
         }
 
         return siteData;

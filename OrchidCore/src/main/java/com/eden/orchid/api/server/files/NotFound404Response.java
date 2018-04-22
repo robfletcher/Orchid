@@ -40,7 +40,8 @@ public final class NotFound404Response {
 
             JSONObject object = new JSONObject(context.getOptionsData().toMap());
             object.put("page", indexPageVars);
-            object.put("theme", context.getTheme());
+            //TODO: Find out how to get the Page from here
+//            object.put("theme", context.getTheme());
 
             String notFoundIndexContent;
             if (resource != null) {

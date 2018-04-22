@@ -1,6 +1,7 @@
 package com.eden.orchid.api.theme.assets;
 
 import com.eden.orchid.api.OrchidContext;
+import com.eden.orchid.api.theme.pages.OrchidPage;
 import com.google.inject.Provider;
 
 import javax.inject.Inject;
@@ -24,7 +25,7 @@ public class GlobalAssetHolder implements AssetHolder {
     }
 
     @Override
-    public void addAssets() {
+    public void addAssets(OrchidPage currentPage) {
         throw new UnsupportedOperationException("GlobalAssetHolder cannot add its own assets");
     }
 
@@ -95,5 +96,9 @@ public class GlobalAssetHolder implements AssetHolder {
 
     public void withNamespace(String namespace, Runnable cb) {
         throw new UnsupportedOperationException("Cannot set the namespace on the GlobalAssetHolder");
+    }
+
+    public void withPage(OrchidPage currentPage, Runnable cb) {
+        throw new UnsupportedOperationException("Cannot set the currentPage on the GlobalAssetHolder");
     }
 }

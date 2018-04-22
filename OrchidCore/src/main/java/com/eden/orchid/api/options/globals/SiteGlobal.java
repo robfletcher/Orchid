@@ -7,12 +7,12 @@ import com.eden.orchid.api.site.OrchidSite;
 public class SiteGlobal implements TemplateGlobal<OrchidSite> {
 
     @Override
-    public String key() {
+    public String key(Object page) {
         return "site";
     }
 
     @Override
-    public OrchidSite get(OrchidContext context) {
+    public OrchidSite get(OrchidContext context, Object page) {
         return context.getSite();
     }
 }
