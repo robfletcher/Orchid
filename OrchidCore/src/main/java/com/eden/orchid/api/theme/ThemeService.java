@@ -1,7 +1,7 @@
 package com.eden.orchid.api.theme;
 
 import com.eden.orchid.api.OrchidService;
-import com.eden.orchid.api.theme.assets.AssetHolder;
+import com.eden.orchid.api.theme.assets.GlobalAssetHolder;
 import com.google.inject.ImplementedBy;
 import org.json.JSONObject;
 
@@ -12,7 +12,7 @@ import org.json.JSONObject;
 @ImplementedBy(ThemeServiceImpl.class)
 public interface ThemeService extends OrchidService {
 
-    default AssetHolder getGlobalAssetHolder() {
+    default GlobalAssetHolder getGlobalAssetHolder() {
         return getService(ThemeService.class).getGlobalAssetHolder();
     }
 
@@ -42,9 +42,5 @@ public interface ThemeService extends OrchidService {
 
     default AdminTheme findAdminTheme(String themeKey, JSONObject data) {
         return getService(ThemeService.class).findAdminTheme(themeKey, data);
-    }
-
-    default void clearAdminThemes() {
-        getService(ThemeService.class).clearAdminThemes();
     }
 }

@@ -178,14 +178,14 @@ public final class OrchidUtils {
     public static void addExtraAssetsTo(OrchidPage currentPage, OrchidContext context, String[] extraCss, String[] extraJs, AssetHolder holder, Object source, String sourceKey) {
         if(!EdenUtils.isEmpty(extraCss)) {
             Arrays.stream(extraCss)
-                  .map((css) -> context.getResourceEntry(currentPage, css))
+                  .map((css) -> context.getResourceEntry(currentPage.getTheme(), css))
                   .filter(Objects::nonNull)
                   .map(orchidResource -> new AssetPage(source, sourceKey, orchidResource, orchidResource.getReference().getTitle()))
                   .forEach(holder::addCss);
         }
         if(!EdenUtils.isEmpty(extraJs)) {
             Arrays.stream(extraJs)
-                    .map((js) -> context.getResourceEntry(currentPage, js))
+                    .map((js) -> context.getResourceEntry(currentPage.getTheme(), js))
                   .filter(Objects::nonNull)
                   .map(orchidResource -> new AssetPage(source, sourceKey, orchidResource, orchidResource.getReference().getTitle()))
                   .forEach(holder::addJs);

@@ -2,7 +2,7 @@ package com.eden.orchid.api.resources;
 
 import com.eden.orchid.api.OrchidService;
 import com.eden.orchid.api.resources.resource.OrchidResource;
-import com.eden.orchid.api.theme.pages.OrchidPage;
+import com.eden.orchid.api.theme.AbstractTheme;
 import com.google.inject.ImplementedBy;
 import org.json.JSONObject;
 
@@ -31,8 +31,8 @@ public interface ResourceService extends OrchidService {
         return getService(ResourceService.class).getResourceEntry(fileName);
     }
 
-    default OrchidResource getResourceEntry(OrchidPage page, final String fileName) {
-        return getService(ResourceService.class).getResourceEntry(page, fileName);
+    default OrchidResource getResourceEntry(AbstractTheme theme, final String fileName) {
+        return getService(ResourceService.class).getResourceEntry(theme, fileName);
     }
 
     default List<OrchidResource> getLocalResourceEntries(String path, String[] fileExtensions, boolean recursive) {
@@ -43,8 +43,8 @@ public interface ResourceService extends OrchidService {
         return getService(ResourceService.class).getResourceEntries(path, fileExtensions, recursive);
     }
 
-    default List<OrchidResource> getResourceEntries(OrchidPage page, String path, String[] fileExtensions, boolean recursive) {
-        return getService(ResourceService.class).getResourceEntries(page, path, fileExtensions, recursive);
+    default List<OrchidResource> getResourceEntries(AbstractTheme theme, String path, String[] fileExtensions, boolean recursive) {
+        return getService(ResourceService.class).getResourceEntries(theme, path, fileExtensions, recursive);
     }
 
     default JSONObject loadAdditionalFile(String url) {
@@ -83,28 +83,28 @@ public interface ResourceService extends OrchidService {
         return getService(ResourceService.class).locateLocalResourceEntry(fileName, fileExtensions);
     }
 
-    default OrchidResource locateTemplate(OrchidPage page, final String fileNames) {
-        return getService(ResourceService.class).locateTemplate(page, fileNames);
+    default OrchidResource locateTemplate(AbstractTheme theme, final String fileNames) {
+        return getService(ResourceService.class).locateTemplate(theme, fileNames);
     }
 
-    default OrchidResource locateTemplate(OrchidPage page, final String fileNames, boolean ignoreMissing) {
-        return getService(ResourceService.class).locateTemplate(page, fileNames, ignoreMissing);
+    default OrchidResource locateTemplate(AbstractTheme theme, final String fileNames, boolean ignoreMissing) {
+        return getService(ResourceService.class).locateTemplate(theme, fileNames, ignoreMissing);
     }
 
-    default OrchidResource locateTemplate(OrchidPage page, final String[] fileNames) {
-        return getService(ResourceService.class).locateTemplate(page, fileNames);
+    default OrchidResource locateTemplate(AbstractTheme theme, final String[] fileNames) {
+        return getService(ResourceService.class).locateTemplate(theme, fileNames);
     }
 
-    default OrchidResource locateTemplate(OrchidPage page, final List<String> fileNames) {
-        return getService(ResourceService.class).locateTemplate(page, fileNames);
+    default OrchidResource locateTemplate(AbstractTheme theme, final List<String> fileNames) {
+        return getService(ResourceService.class).locateTemplate(theme, fileNames);
     }
 
-    default OrchidResource locateTemplate(OrchidPage page, final String[] fileNames, boolean ignoreMissing) {
-        return getService(ResourceService.class).locateTemplate(page, fileNames, ignoreMissing);
+    default OrchidResource locateTemplate(AbstractTheme theme, final String[] fileNames, boolean ignoreMissing) {
+        return getService(ResourceService.class).locateTemplate(theme, fileNames, ignoreMissing);
     }
 
-    default OrchidResource locateTemplate(OrchidPage page, final List<String> fileNames, boolean ignoreMissing) {
-        return getService(ResourceService.class).locateTemplate(page, fileNames, ignoreMissing);
+    default OrchidResource locateTemplate(AbstractTheme theme, final List<String> fileNames, boolean ignoreMissing) {
+        return getService(ResourceService.class).locateTemplate(theme, fileNames, ignoreMissing);
     }
 
 }

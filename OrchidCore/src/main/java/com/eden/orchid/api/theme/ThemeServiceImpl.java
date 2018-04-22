@@ -3,7 +3,6 @@ package com.eden.orchid.api.theme;
 import com.caseyjbrooks.clog.Clog;
 import com.eden.common.json.JSONElement;
 import com.eden.orchid.api.OrchidContext;
-import com.eden.orchid.api.theme.assets.AssetHolder;
 import com.eden.orchid.api.theme.assets.GlobalAssetHolder;
 import com.eden.orchid.utilities.OrchidUtils;
 import com.google.inject.Provider;
@@ -22,7 +21,7 @@ import java.util.Set;
 public final class ThemeServiceImpl implements ThemeService {
 
     private OrchidContext context;
-    private AssetHolder assetHolder;
+    private final GlobalAssetHolder globalAssetHolder;
 
     private final String defaultTheme;
     private final String defaultAdminTheme;
@@ -35,12 +34,12 @@ public final class ThemeServiceImpl implements ThemeService {
 
     @Inject
     public ThemeServiceImpl(
-            GlobalAssetHolder assetHolder,
+            GlobalAssetHolder globalAssetHolder,
             Provider<Set<Theme>> themesProvider,
             @Named("theme") String defaultTheme,
             Provider<Set<AdminTheme>> adminThemesProvider,
             @Named("adminTheme") String defaultAdminTheme) {
-        this.assetHolder = assetHolder;
+        this.globalAssetHolder = globalAssetHolder;
         this.defaultTheme = defaultTheme;
         this.themesProvider = themesProvider;
 
@@ -62,8 +61,8 @@ public final class ThemeServiceImpl implements ThemeService {
     }
 
     @Override
-    public AssetHolder getGlobalAssetHolder() {
-        return assetHolder;
+    public GlobalAssetHolder getGlobalAssetHolder() {
+        return globalAssetHolder;
     }
 
 // Interface Implementation
@@ -73,6 +72,7 @@ public final class ThemeServiceImpl implements ThemeService {
     public void clearThemes() {
         loadedThemes.clear();
         loadedAdminThemes.clear();
+        globalAssetHolder.clearAssets();
     }
 
     @Override
@@ -123,11 +123,6 @@ public final class ThemeServiceImpl implements ThemeService {
             Clog.e("Could not find theme [{}]", themeKey);
             return null;
         }
-    }
-
-    @Override
-    public void clearAdminThemes() {
-        loadedAdminThemes.clear();
     }
 
     @Override

@@ -9,9 +9,10 @@ import com.eden.orchid.api.resources.resource.OrchidResource;
 import com.eden.orchid.api.resources.resourceSource.FileResourceSource;
 import com.eden.orchid.api.resources.resourceSource.OrchidResourceSource;
 import com.eden.orchid.api.resources.resourceSource.PluginResourceSource;
-import com.eden.orchid.api.theme.pages.OrchidPage;
+import com.eden.orchid.api.theme.AbstractTheme;
 import com.eden.orchid.api.theme.pages.OrchidReference;
 import com.eden.orchid.utilities.OrchidUtils;
+import com.google.common.collect.Lists;
 import com.google.inject.name.Named;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -163,7 +164,7 @@ public final class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public OrchidResource getResourceEntry(OrchidPage page, final String fileName) {
+    public OrchidResource getResourceEntry(AbstractTheme theme, final String fileName) {
         OrchidResource resource = null;
 
         // If the fileName looks like an external resource, return a Resource pointing to that resource
@@ -179,8 +180,8 @@ public final class ResourceServiceImpl implements ResourceService {
 
         // If not external, check for a resource in any specified local resource sources
         if (resource == null) {
-            if(page != null) {
-                resource = page.getTheme().getResourceEntry(fileName);
+            if(theme != null) {
+                resource = theme.getResourceEntry(fileName);
             }
             else {
                 resource = context.findTheme().getResourceEntry(fileName);
@@ -219,15 +220,15 @@ public final class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public List<OrchidResource> getResourceEntries(OrchidPage page, String path, String[] fileExtensions, boolean recursive) {
+    public List<OrchidResource> getResourceEntries(AbstractTheme theme, String path, String[] fileExtensions, boolean recursive) {
         TreeMap<String, OrchidResource> entries = new TreeMap<>();
 
         // add entries from local sources
         addEntries(entries, fileResourceSources, path, fileExtensions, recursive);
 
         // add entries from theme
-        if(page != null) {
-            addEntries(entries, Collections.singletonList(page.getTheme()), path, fileExtensions, recursive);
+        if(theme != null) {
+            addEntries(entries, Collections.singletonList(theme), path, fileExtensions, recursive);
         }
         else {
             addEntries(entries, Collections.singletonList(context.findTheme()), path, fileExtensions, recursive);
@@ -413,41 +414,39 @@ public final class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public OrchidResource locateTemplate(OrchidPage page, String fileNames) {
+    public OrchidResource locateTemplate(AbstractTheme theme, String fileNames) {
         if(fileNames.startsWith("?")) {
-            return locateTemplate(page, StringUtils.stripStart(fileNames, "?"), true);
+            return locateTemplate(theme, StringUtils.stripStart(fileNames, "?"), true);
         }
         else {
-            return locateTemplate(page, fileNames, false);
+            return locateTemplate(theme, fileNames, false);
         }
     }
 
     @Override
-    public OrchidResource locateTemplate(OrchidPage page, final String[] fileNames) {
-        return locateTemplate(page, fileNames, true);
+    public OrchidResource locateTemplate(AbstractTheme theme, final String[] fileNames) {
+        return locateTemplate(theme, fileNames, true);
     }
 
     @Override
-    public OrchidResource locateTemplate(OrchidPage page, List<String> fileNames) {
-        return locateTemplate(page, fileNames, true);
+    public OrchidResource locateTemplate(AbstractTheme theme, List<String> fileNames) {
+        return locateTemplate(theme, fileNames, true);
     }
 
     @Override
-    public OrchidResource locateTemplate(OrchidPage page, String fileNames, boolean ignoreMissing) {
-        return locateTemplate(page, fileNames.split(","), ignoreMissing);
+    public OrchidResource locateTemplate(AbstractTheme theme, String fileNames, boolean ignoreMissing) {
+        return locateTemplate(theme, fileNames.split(","), ignoreMissing);
     }
 
     @Override
-    public OrchidResource locateTemplate(OrchidPage page, final String[] fileNames, boolean ignoreMissing) {
-        List<String> fileNamesList = new ArrayList<>();
-        Collections.addAll(fileNamesList, fileNames);
-        return locateTemplate(page, fileNamesList, ignoreMissing);
+    public OrchidResource locateTemplate(AbstractTheme theme, final String[] fileNames, boolean ignoreMissing) {
+        return locateTemplate(theme, Lists.newArrayList(fileNames), ignoreMissing);
     }
 
     @Override
-    public OrchidResource locateTemplate(OrchidPage page, final List<String> fileNames, boolean ignoreMissing) {
+    public OrchidResource locateTemplate(AbstractTheme theme, final List<String> fileNames, boolean ignoreMissing) {
         for(String template : fileNames) {
-            OrchidResource resource = locateSingleTemplate(page, template);
+            OrchidResource resource = locateSingleTemplate(theme, template);
             if(resource != null) {
                 return resource;
             }
@@ -461,22 +460,22 @@ public final class ResourceServiceImpl implements ResourceService {
         }
     }
 
-    private OrchidResource locateSingleTemplate(OrchidPage page, String templateName) {
+    private OrchidResource locateSingleTemplate(AbstractTheme theme, String templateName) {
         String fullFileName = OrchidUtils.normalizePath(OrchidUtils.normalizePath(templateName));
 
         if(!fullFileName.startsWith("templates/")) {
             fullFileName = "templates/" + fullFileName;
         }
         if(!fullFileName.contains(".")) {
-            if(page != null) {
-                fullFileName = fullFileName + "." + page.getTheme().getPreferredTemplateExtension();
+            if(theme != null) {
+                fullFileName = fullFileName + "." + theme.getPreferredTemplateExtension();
             }
             else {
                 fullFileName = fullFileName + ".peb";
             }
         }
 
-        return getResourceEntry(page, fullFileName);
+        return getResourceEntry(theme, fullFileName);
     }
 
 }

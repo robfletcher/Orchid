@@ -161,7 +161,6 @@ public final class TaskServiceImpl implements TaskService, OrchidEventListener {
                 context.loadOptions();
 
                 context.clearThemes();
-                context.clearAdminThemes();
 
                 context.extractServiceOptions();
 
