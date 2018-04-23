@@ -1,4 +1,4 @@
-{% extends '_wikiBase' %}
+{% extends page|templates('_wikiBase') %}
 
 {% block sectionIntro %}
 {% block pluginNotice %}

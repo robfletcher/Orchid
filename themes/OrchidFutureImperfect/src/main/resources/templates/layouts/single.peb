@@ -1,4 +1,4 @@
-{% extends 'layouts/layoutBase' %}
+{% extends page|templates('layouts/layoutBase') %}
 
 {% block bodyClass %}
     {{ 'single' }}
@@ -8,13 +8,13 @@
 
     <!-- Main -->
     <div id="main">
-        {% include 'includes/componentHolder' with {"componentHolder": page.components} %}
+        {% include page|templates('includes/componentHolder') with {"componentHolder": page.components} %}
 
         <div class="pagination-single">
-            {% include 'includes/pagination' %}
+            {% include page|templates('includes/pagination') %}
         </div>
     </div>
 
-    {% include 'includes/footer' %}
+    {% include page|templates('includes/footer') %}
 
 {% endblock %}

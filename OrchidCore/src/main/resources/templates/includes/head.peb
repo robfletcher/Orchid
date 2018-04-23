@@ -40,7 +40,7 @@
 </script>
 
 {% if site.debug %}
-{% include 'includes/debug' %}
+{% include page|templates('includes/debug') %}
 {% endif %}
 
-{% include '?meta' %}
+{% include page|templates('meta', true) %}

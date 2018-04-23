@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-{% include '?trackingHeadStart' %}
-{% include 'includes/head' %}
-{% include 'includes/styles' %}
+{% include page|templates('trackingHeadStart', true) %}
+{% include page|templates('includes/head') %}
+{% include page|templates('includes/styles') %}
 {% block layoutStyles %}{% endblock %}
-{% include '?trackingHeadEnd' %}
+{% include page|templates('trackingHeadEnd', true) %}
 </head>
 <body>
-{% include '?trackingBodyStart' %}
+{% include page|templates('trackingBodyStart', true) %}
 
 {% block baseNavbar %}
 {% if theme.social.github is not empty %}
@@ -17,7 +17,7 @@
    title="Fork me on GitHub">Fork me on GitHub</a>
 {% endif %}
 
-{% include 'includes/navbar' %}
+{% include page|templates('includes/navbar') %}
 {% endblock %}
 
 <div id="top"></div>
@@ -32,14 +32,14 @@
 
         {% endblock %}
         {% block remainingComponents %}
-            {% include 'includes/componentHolder' with {"componentHolder": page.components} %}
+            {% include page|templates('includes/componentHolder') with {"componentHolder": page.components} %}
         {% endblock %}
         </div>
 
         <!-- Page navigation
         =========================================== -->
         <div class="col-md-3" role="complementary">
-        {% include 'includes/sidenav' %}
+        {% include page|templates('includes/sidenav') %}
         </div>
     </div>
 </div>
@@ -47,12 +47,12 @@
 {% block baseFooter %}
 <div id="footer">
     <div class="container bs-docs-container">
-    {% include 'includes/footer' %}
+    {% include page|templates('includes/footer') %}
     </div>
 </div>
 {% endblock %}
 
-{% include 'includes/scripts' %}
+{% include page|templates('includes/scripts') %}
 {% block layoutScripts %}{% endblock %}
 <script>
     $(function () {
@@ -61,6 +61,6 @@
         buildNav();
     });
 </script>
-{% include '?trackingBodyEnd' %}
+{% include page|templates('trackingBodyEnd', true) %}
 </body>
 </html>

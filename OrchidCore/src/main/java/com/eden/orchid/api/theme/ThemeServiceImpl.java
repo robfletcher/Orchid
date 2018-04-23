@@ -2,6 +2,7 @@ package com.eden.orchid.api.theme;
 
 import com.caseyjbrooks.clog.Clog;
 import com.eden.common.json.JSONElement;
+import com.eden.common.util.EdenUtils;
 import com.eden.orchid.api.OrchidContext;
 import com.eden.orchid.api.theme.assets.GlobalAssetHolder;
 import com.eden.orchid.utilities.OrchidUtils;
@@ -100,12 +101,12 @@ public final class ThemeServiceImpl implements ThemeService {
             JSONObject allThemeOptions = new JSONObject();
 
             JSONElement defaultThemeOptions = context.query("theme");
-            if(OrchidUtils.elementIsObject(defaultThemeOptions)) {
+            if(EdenUtils.elementIsObject(defaultThemeOptions)) {
                 allThemeOptions = OrchidUtils.merge(allThemeOptions, (JSONObject) defaultThemeOptions.getElement());
             }
 
             JSONElement customThemeOptions = context.query(themeKey);
-            if(OrchidUtils.elementIsObject(customThemeOptions)) {
+            if(EdenUtils.elementIsObject(customThemeOptions)) {
                 allThemeOptions = OrchidUtils.merge(allThemeOptions, (JSONObject) customThemeOptions.getElement());
             }
 
@@ -150,12 +151,12 @@ public final class ThemeServiceImpl implements ThemeService {
             JSONObject allThemeOptions = new JSONObject();
 
             JSONElement defaultThemeOptions = context.query("adminTheme");
-            if(OrchidUtils.elementIsObject(defaultThemeOptions)) {
+            if(EdenUtils.elementIsObject(defaultThemeOptions)) {
                 allThemeOptions = OrchidUtils.merge(allThemeOptions, (JSONObject) defaultThemeOptions.getElement());
             }
 
             JSONElement customThemeOptions = context.query(themeKey);
-            if(OrchidUtils.elementIsObject(customThemeOptions)) {
+            if(EdenUtils.elementIsObject(customThemeOptions)) {
                 allThemeOptions = OrchidUtils.merge(allThemeOptions, (JSONObject) customThemeOptions.getElement());
             }
 

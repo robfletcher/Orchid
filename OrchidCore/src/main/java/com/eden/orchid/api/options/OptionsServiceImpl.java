@@ -9,7 +9,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.inject.Inject;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @since v1.0.0
@@ -103,7 +106,10 @@ public final class OptionsServiceImpl implements OptionsService {
         for(TemplateGlobal global : globals) {
             String key = global.key(data);
             if(!EdenUtils.isEmpty(key)) {
-                siteData.put(key, global.get(context, data));
+                Object value = global.get(context, data);
+                if(value != null) {
+                    siteData.put(key, value);
+                }
             }
         }
 
@@ -134,10 +140,10 @@ public final class OptionsServiceImpl implements OptionsService {
 //----------------------------------------------------------------------------------------------------------------------
 
     private void addJSONElement(Map<String, Object> siteData, JSONElement data) {
-        if(OrchidUtils.elementIsObject(data)) {
+        if(EdenUtils.elementIsObject(data)) {
             addJSONObject(siteData, (JSONObject) data.getElement());
         }
-        else if(OrchidUtils.elementIsArray(data)) {
+        else if(EdenUtils.elementIsArray(data)) {
             addJSONArray(siteData, (JSONArray) data.getElement());
         }
     }

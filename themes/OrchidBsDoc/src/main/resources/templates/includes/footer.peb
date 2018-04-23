@@ -32,5 +32,5 @@
     {% endif %}
     </div>
     <br>
-    {% include 'includes/copyright' %}
+    {% include page|templates('includes/copyright') %}
 </footer>

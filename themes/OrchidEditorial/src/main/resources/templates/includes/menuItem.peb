@@ -3,7 +3,7 @@
         <span class="opener">{{ menuItem.title | title }}</span>
         <ul>
             {% for childLink in menuItem.children %}
-                {% include 'includes/menuItem' with {"menuItem": childLink} %}
+                {% include page|templates('includes/menuItem') with {"menuItem": childLink} %}
             {% endfor %}
         </ul>
     </li>

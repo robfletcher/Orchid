@@ -1,1 +1,1 @@
-{% extends (official) ? 'includes/officialTheme' : 'includes/unofficialTheme' %}
+{% extends page|templates((official) ? 'includes/officialTheme' : 'includes/unofficialTheme') %}

@@ -1,4 +1,4 @@
-{% extends 'layouts/trianglifyBase,layouts/index' %}
+{% extends page|templates('layouts/trianglifyBase,layouts/index') %}
 
 {% block baseJumbotron %}
     <div class="bs-docs-masthead full-size" id="jumbotron">
@@ -22,7 +22,7 @@
 
     {% endblock %}
     {% block remainingComponents %}
-        {% include 'includes/componentHolder' with {"componentHolder": page.components} %}
+        {% include page|templates('includes/componentHolder') with {"componentHolder": page.components} %}
     {% endblock %}
 </div>
 {% endblock %}

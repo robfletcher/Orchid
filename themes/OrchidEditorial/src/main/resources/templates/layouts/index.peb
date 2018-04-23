@@ -6,13 +6,13 @@
 -->
 <html>
 <head>
-{% include '?trackingHeadStart' %}
-{% include 'includes/head' %}
-{% include 'includes/styles' %}
-{% include '?trackingHeadEnd' %}
+{% include page|templates('trackingHeadStart', true) %}
+{% include page|templates('includes/head') %}
+{% include page|templates('includes/styles') %}
+{% include page|templates('trackingHeadEnd', true) %}
 </head>
 <body class="is-loading">
-{% include '?trackingBodyStart' %}
+{% include page|templates('trackingBodyStart', true) %}
 
 <!-- Wrapper -->
 <div id="wrapper">
@@ -23,7 +23,7 @@
 
             <!-- Header -->
             {% block innerHeader %}
-                {% include 'includes/header' %}
+                {% include page|templates('includes/header') %}
             {% endblock %}
             {% block banner %}
             {% endblock %}
@@ -31,7 +31,7 @@
                 <section id="pageContent">
                     <header class="major"><h2>{{ page.title }}</h2></header>
                     <article>
-                    {% include 'includes/componentHolder.peb' with {"componentHolder": page.components} %}
+                    {% include page|templates('includes/componentHolder') with {"componentHolder": page.components} %}
                     </article>
                 </section>
             {% endblock %}
@@ -39,14 +39,14 @@
         <hr>
 
         <!-- Page Footer -->
-        {% include 'includes/footer.peb' %}
+        {% include page|templates('includes/footer') %}
     </div>
 
     <!-- Sidebar -->
-    {% include 'includes/sidebar.peb' %}
+    {% include page|templates('includes/sidebar') %}
 </div>
 
-{% include 'includes/scripts' %}
-{% include '?trackingBodyEnd' %}
+{% include page|templates('includes/scripts') %}
+{% include page|templates('trackingBodyEnd', true) %}
 </body>
 </html>

@@ -1,4 +1,4 @@
-{% extends 'layouts/trianglifyBase,layouts/index' %}
+{% extends page|templates('layouts/trianglifyBase,layouts/index') %}
 
 {% block layoutStyles %}
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -49,7 +49,7 @@
 
 {% endblock %}
 {% block remainingComponents %}
-    {% include 'includes/componentHolder' with {"componentHolder": page.components} %}
+    {% include page|templates('includes/componentHolder') with {"componentHolder": page.components} %}
 {% endblock %}
 </div>
 {% endblock %}

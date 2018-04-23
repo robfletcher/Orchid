@@ -1,4 +1,4 @@
-{% extends 'layouts/geopatternBase' %}
+{% extends page|templates('layouts/geopatternBase') %}
 
 {% block baseJumbotron %}
     <div class="bs-docs-masthead" id="jumbotron">

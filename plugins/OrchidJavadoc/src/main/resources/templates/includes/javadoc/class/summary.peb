@@ -2,7 +2,7 @@
 
 <div>
     <code>
-        {% include 'includes/javadoc/misc/annotations' with {"annotations": page.classDoc.annotations} %}
+        {% include page|templates('includes/javadoc/misc/annotations') with {"annotations": page.classDoc.annotations} %}
         <span>
             <b>{{ page.classDoc.modifiers }} {{ page.classType }} <a href="{{ page.link }}">{{ page.classDoc.name }}</a></b>
         </span>

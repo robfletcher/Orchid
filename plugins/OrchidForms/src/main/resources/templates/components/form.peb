@@ -4,5 +4,5 @@
         <h3>{{ component.form.title }}</h3>
     </header>
 
-    {% include 'includes/form' with {"form": component.form} %}
+    {% include page|templates('includes/form') with {"form": component.form} %}
 {% endif %}

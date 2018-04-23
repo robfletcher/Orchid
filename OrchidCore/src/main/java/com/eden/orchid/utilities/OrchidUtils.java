@@ -1,6 +1,5 @@
 package com.eden.orchid.utilities;
 
-import com.eden.common.json.JSONElement;
 import com.eden.common.util.EdenUtils;
 import com.eden.orchid.api.OrchidContext;
 import com.eden.orchid.api.theme.assets.AssetHolder;
@@ -76,18 +75,6 @@ public final class OrchidUtils {
 
     public static <T> Predicate<T> not(Predicate<T> t) {
         return t.negate();
-    }
-
-    public static boolean elementIsObject(JSONElement el) {
-        return (el != null) && (el.getElement() != null) && (el.getElement() instanceof JSONObject);
-    }
-
-    public static boolean elementIsArray(JSONElement el) {
-        return (el != null) && (el.getElement() != null) && (el.getElement() instanceof JSONArray);
-    }
-
-    public static boolean elementIsString(JSONElement el) {
-        return (el != null) && (el.getElement() != null) && (el.getElement() instanceof String);
     }
 
     public static JSONObject merge(JSONObject... sources) {

@@ -1,4 +1,4 @@
-{% extends 'layouts/layoutBase' %}
+{% extends page|templates('layouts/layoutBase') %}
 
 {% block bodyClass %}
     {{ 'index' }}
@@ -8,9 +8,9 @@
 
     <!-- Main -->
     <div id="main">
-        {% include 'includes/componentHolder' with {"componentHolder": page.components} %}
+        {% include page|templates('includes/componentHolder') with {"componentHolder": page.components} %}
 
-        {% include 'includes/pagination' %}
+        {% include page|templates('includes/pagination') %}
     </div>
 
     <!-- Sidebar -->
@@ -25,7 +25,7 @@
             </header>
         </section>
 
-        {% include 'includes/componentHolder' with {"componentHolder": theme.sidebar} %}
+        {% include page|templates('includes/componentHolder') with {"componentHolder": theme.sidebar} %}
 
         <!-- About -->
         <section class="blurb">
@@ -33,7 +33,7 @@
             <p>{{ site.about.siteDescription }}</p>
         </section>
 
-        {% include 'includes/footer' %}
+        {% include page|templates('includes/footer') %}
 
     </section>
 

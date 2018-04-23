@@ -1,4 +1,4 @@
-{% extends 'includes/basePlugin' %}
+{% extends page|templates('includes/basePlugin') %}
 
 {%- block homepageUrl -%}
     {{- site.baseUrl.replaceAll('OrchidCore', page.reference.originalFileName) -}}

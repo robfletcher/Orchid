@@ -1,4 +1,4 @@
-{% extends 'includes/termArchive-group-baseLinked' %}
+{% extends page|templates('includes/termArchive-group-baseLinked') %}
 
 {% block cardBody %}
 {% set 'previewImage' = page.get('images')|first %}

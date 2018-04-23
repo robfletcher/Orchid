@@ -23,7 +23,7 @@
     {% if method.annotations|length > 0 %}
         <div class="panel-body">
             <div><b>Method Annotations:</b></div>
-            <code>{% include 'includes/javadoc/misc/annotations' with {"annotations": method.annotations} %}</code>
+            <code>{% include page|templates('includes/javadoc/misc/annotations') with {"annotations": method.annotations} %}</code>
         </div>
     {% endif %}
     <div class="panel-body">
@@ -34,7 +34,7 @@
         <div class="panel-body">
             <b>Type Parameters: </b>
         </div>
-    {% include 'includes/javadoc/misc/typeParameterList' with {
+    {% include page|templates('includes/javadoc/misc/typeParameterList') with {
     "typeParameters": method.typeParameters,
     "typeParameterTags": method.typeParamTags
     } %}
@@ -44,7 +44,7 @@
         <div class="panel-body">
             <b>Parameters: </b>
         </div>
-    {% include 'includes/javadoc/misc/parameterList' with {
+    {% include page|templates('includes/javadoc/misc/parameterList') with {
     "parameters": method.parameters,
     "parameterTags": method.paramTags
     } %}

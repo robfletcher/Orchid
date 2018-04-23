@@ -6,12 +6,12 @@
                 {% if not (component.noWrapper) %}
                     {% block componentWrapper %}
                         <div class="component component-{{ component.type }} component-order-{{ component.order }}">
-                            {% include '?'~(component | template('component') | join(',')) %}
+                            {% include page|templates(component | template('component'), true) %}
                         </div>
                     {% endblock %}
                 {% else %}
                     {% block componentNoWrapper %}
-                        {% include '?'~(component | template('component') | join(',')) %}
+                        {% include page|templates(component | template('component'), true) %}
                     {% endblock %}
                 {% endif %}
             {% endif %}

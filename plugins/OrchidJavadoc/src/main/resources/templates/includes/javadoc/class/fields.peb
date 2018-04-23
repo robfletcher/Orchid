@@ -30,7 +30,7 @@
     {% if field.annotations|length > 0 %}
         <div class="panel-body">
             <div><b>Field Annotations:</b></div>
-            <code>{% include 'includes/javadoc/misc/annotations' with {"annotations": field.annotations} %}</code>
+            <code>{% include page|templates('includes/javadoc/misc/annotations') with {"annotations": field.annotations} %}</code>
         </div>
     {% endif %}
     <div class="panel-body">

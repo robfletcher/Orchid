@@ -6,8 +6,8 @@
 <!-- PAGE -->
 <!-- Type: {{ page.key }} -->
 <!-- Class: {{ page.class.name }} -->
-<!-- Layout: {{ page | template('layout') | join(', ') }} -->
-<!-- Page Template: {{ page | template('page') | join(', ') }} -->
+<!-- Layout: {{ page | templates(page | template('layout'), true) }} -->
+<!-- Page Template: {{ page | templates(page | template('page'), true) }} -->
 
 <!-- RESOURCE -->
 <!-- Class: {{ page.resource.class.name }} -->

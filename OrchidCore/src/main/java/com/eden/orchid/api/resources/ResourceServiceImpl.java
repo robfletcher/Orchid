@@ -10,6 +10,7 @@ import com.eden.orchid.api.resources.resourceSource.FileResourceSource;
 import com.eden.orchid.api.resources.resourceSource.OrchidResourceSource;
 import com.eden.orchid.api.resources.resourceSource.PluginResourceSource;
 import com.eden.orchid.api.theme.AbstractTheme;
+import com.eden.orchid.api.theme.Theme;
 import com.eden.orchid.api.theme.pages.OrchidReference;
 import com.eden.orchid.utilities.OrchidUtils;
 import com.google.common.collect.Lists;
@@ -20,7 +21,6 @@ import okhttp3.Response;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 
 import javax.inject.Inject;
@@ -39,6 +39,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @since v1.0.0
@@ -46,6 +48,8 @@ import java.util.TreeSet;
  */
 @Singleton
 public final class ResourceServiceImpl implements ResourceService {
+
+    private final Pattern templatePattern = Pattern.compile("(?:(.*?)::)?(\\?)?(.*)");
 
     private OrchidContext context;
     private Set<FileResourceSource> fileResourceSources;
@@ -414,37 +418,31 @@ public final class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public OrchidResource locateTemplate(AbstractTheme theme, String fileNames) {
-        if(fileNames.startsWith("?")) {
-            return locateTemplate(theme, StringUtils.stripStart(fileNames, "?"), true);
+    public OrchidResource locateTemplate(final String fileNames) {
+        Matcher matcher = templatePattern.matcher(fileNames);
+
+        String themeKey = "";
+        boolean ignoreMissing = false;
+        String[] templateNames = new String[] {""};
+
+        if(matcher.matches()) {
+            themeKey = matcher.group(1);
+            ignoreMissing = !EdenUtils.isEmpty(matcher.group(2));
+            templateNames = matcher.group(3).split(",");
         }
-        else {
-            return locateTemplate(theme, fileNames, false);
-        }
+
+        return locateTemplate(themeKey, templateNames, ignoreMissing);
     }
 
     @Override
-    public OrchidResource locateTemplate(AbstractTheme theme, final String[] fileNames) {
-        return locateTemplate(theme, fileNames, true);
+    public OrchidResource locateTemplate(final String themeKey, final String[] fileNames, final boolean ignoreMissing) {
+        return locateTemplate(themeKey, Lists.newArrayList(fileNames), ignoreMissing);
     }
 
     @Override
-    public OrchidResource locateTemplate(AbstractTheme theme, List<String> fileNames) {
-        return locateTemplate(theme, fileNames, true);
-    }
+    public OrchidResource locateTemplate(final String themeKey, final List<String> fileNames, final boolean ignoreMissing) {
+        Theme theme = context.findTheme(themeKey);
 
-    @Override
-    public OrchidResource locateTemplate(AbstractTheme theme, String fileNames, boolean ignoreMissing) {
-        return locateTemplate(theme, fileNames.split(","), ignoreMissing);
-    }
-
-    @Override
-    public OrchidResource locateTemplate(AbstractTheme theme, final String[] fileNames, boolean ignoreMissing) {
-        return locateTemplate(theme, Lists.newArrayList(fileNames), ignoreMissing);
-    }
-
-    @Override
-    public OrchidResource locateTemplate(AbstractTheme theme, final List<String> fileNames, boolean ignoreMissing) {
         for(String template : fileNames) {
             OrchidResource resource = locateSingleTemplate(theme, template);
             if(resource != null) {
@@ -456,12 +454,12 @@ public final class ResourceServiceImpl implements ResourceService {
             return null;
         }
         else {
-            throw new IllegalArgumentException("Could not find template in list \"" + fileNames + "\"");
+            throw new IllegalArgumentException("Could not find template in list \"" + String.join(",", fileNames) + "\"");
         }
     }
 
     private OrchidResource locateSingleTemplate(AbstractTheme theme, String templateName) {
-        String fullFileName = OrchidUtils.normalizePath(OrchidUtils.normalizePath(templateName));
+        String fullFileName = OrchidUtils.normalizePath(templateName);
 
         if(!fullFileName.startsWith("templates/")) {
             fullFileName = "templates/" + fullFileName;
@@ -476,6 +474,50 @@ public final class ResourceServiceImpl implements ResourceService {
         }
 
         return getResourceEntry(theme, fullFileName);
+    }
+
+// Locate Resource
+//----------------------------------------------------------------------------------------------------------------------
+
+    @Override
+    public OrchidResource locateResource(final String fileNames) {
+        Matcher matcher = templatePattern.matcher(fileNames);
+
+        String themeKey = "";
+        boolean ignoreMissing = false;
+        String[] templateNames = new String[] {""};
+
+        if(matcher.matches()) {
+            themeKey = matcher.group(1);
+            ignoreMissing = !EdenUtils.isEmpty(matcher.group(2));
+            templateNames = matcher.group(3).split(",");
+        }
+
+        return locateResource(themeKey, templateNames, ignoreMissing);
+    }
+
+    @Override
+    public OrchidResource locateResource(final String themeKey, final String[] fileNames, final boolean ignoreMissing) {
+        return locateResource(themeKey, Lists.newArrayList(fileNames), ignoreMissing);
+    }
+
+    @Override
+    public OrchidResource locateResource(final String themeKey, final List<String> fileNames, final boolean ignoreMissing) {
+        Theme theme = context.findTheme(themeKey);
+
+        for(String template : fileNames) {
+            OrchidResource resource = getResourceEntry(theme, OrchidUtils.normalizePath(template));
+            if(resource != null) {
+                return resource;
+            }
+        }
+
+        if(ignoreMissing) {
+            return null;
+        }
+        else {
+            throw new IllegalArgumentException("Could not find template in list \"" + String.join(",", fileNames) + "\"");
+        }
     }
 
 }

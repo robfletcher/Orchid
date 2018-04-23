@@ -1,4 +1,4 @@
-{% extends view.layout %}
+{% extends page|templates(view.layout) %}
 
 {% block allContent %}
 <iframe-refresh src="{{ site.baseUrl }}/admin/index.html"></iframe-refresh>

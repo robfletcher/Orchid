@@ -1,4 +1,4 @@
-{% extends 'includes/baseTheme' %}
+{% extends page|templates('includes/baseTheme') %}
 
 {%- block homepageUrl -%}{{- homepageUrl -}}{%- endblock %}
 {%- block homepageText -%}{{- homepageUrl -}}{%- endblock -%}

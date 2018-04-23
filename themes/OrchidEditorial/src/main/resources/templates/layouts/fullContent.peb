@@ -1,9 +1,9 @@
-{% extends 'layouts/index' %}
+{% extends page|templates('layouts/index') %}
 
 {% block innerHeader %}
 
 {% endblock %}
 
 {% block pageContent %}
-    {% include 'includes/componentHolder' with {"componentHolder": page.components} %}
+    {% include page|templates('includes/componentHolder') with {"componentHolder": page.components} %}
 {% endblock %}

@@ -11,7 +11,7 @@
     {% if ctor.annotations|length > 0 %}
         <div class="panel-body">
             <div><b>Constructor Annotations:</b></div>
-            <code>{% include 'includes/javadoc/misc/annotations' with {"annotations": ctor.annotations} %}</code>
+            <code>{% include page|templates('includes/javadoc/misc/annotations') with {"annotations": ctor.annotations} %}</code>
         </div>
     {% endif %}
     <div class="panel-body">
@@ -22,7 +22,7 @@
         <div class="panel-body">
             <b>Type Parameters: </b>
         </div>
-    {% include 'includes/javadoc/misc/typeParameterList' with {
+    {% include page|templates('includes/javadoc/misc/typeParameterList') with {
     "typeParameters": ctor.typeParameters,
     "typeParameterTags": ctor.typeParamTags
     } %}
@@ -32,7 +32,7 @@
         <div class="panel-body">
             <b>Parameters: </b>
         </div>
-    {% include 'includes/javadoc/misc/parameterList' with {
+    {% include page|templates('includes/javadoc/misc/parameterList') with {
     "parameters": ctor.parameters,
     "parameterTags": ctor.paramTags
     } %}

@@ -6,13 +6,13 @@
 -->
 <html>
 <head>
-{% include '?trackingHeadStart' %}
-{% include 'includes/head' %}
-{% include 'includes/styles' %}
-{% include '?trackingHeadEnd' %}
+{% include page|templates('trackingHeadStart', true) %}
+{% include page|templates('includes/head') %}
+{% include page|templates('includes/styles') %}
+{% include page|templates('trackingHeadEnd', true) %}
 </head>
 <body class="{% block bodyClass %}{% endblock %}">
-{% include '?trackingBodyStart' %}
+{% include page|templates('trackingBodyStart', true) %}
 
 <div id="search-results" data-orchid-search-results style="display: none;">
     <header>Search Results</header>
@@ -82,8 +82,8 @@
 
 </div>
 
-{% include 'includes/scripts' %}
+{% include page|templates('includes/scripts') %}
 
-{% include '?trackingBodyEnd' %}
+{% include page|templates('trackingBodyEnd', true) %}
 </body>
 </html>

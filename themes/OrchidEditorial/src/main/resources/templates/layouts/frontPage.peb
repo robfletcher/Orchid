@@ -1,4 +1,4 @@
-{% extends 'layouts/index' %}
+{% extends page|templates('layouts/index') %}
 
 {% block banner %}
     <section id="banner">
@@ -21,7 +21,7 @@
 {% block pageContent %}
     <section id="pageContent">
         <article>
-            {% include 'includes/componentHolder' with {"componentHolder": page.components} %}
+            {% include page|templates('includes/componentHolder') with {"componentHolder": page.components} %}
         </article>
     </section>
 {% endblock %}

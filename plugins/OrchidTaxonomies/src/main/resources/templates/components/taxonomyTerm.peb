@@ -4,5 +4,5 @@
     <a href="{{component.taxonomy.link}}">{{component.taxonomy.title}}</a> >
     <a href="{{component.term.link}}">{{component.term.title}}</a>
 </p>
-{% include 'includes/basicTermArchive' with {'taxonomy': component.taxonomy, 'term': component.term, 'pages': component.term.allPages} %}
+{% include page|templates('includes/basicTermArchive') with {'taxonomy': component.taxonomy, 'term': component.term, 'pages': component.term.allPages} %}
 </div>

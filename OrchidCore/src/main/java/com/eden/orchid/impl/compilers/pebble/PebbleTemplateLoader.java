@@ -32,10 +32,8 @@ public final class PebbleTemplateLoader implements Loader<String> {
 
     @Override
     public Reader getReader(String templateName) throws LoaderException {
-        templateName = templateName.replaceAll("::.*::", "");
-
         try {
-            OrchidResource res = context.locateTemplate(null, templateName);
+            OrchidResource res = context.locateTemplate(templateName);
             return (res != null) ? getReaderFromResource(res) : new StringReader("");
         }
         catch (Exception e) {
@@ -45,8 +43,7 @@ public final class PebbleTemplateLoader implements Loader<String> {
 
     @Override
     public String createCacheKey(String templateName) {
-        //TODO: Find out how to get the Page from here
-        return "::" + context.findTheme().getKey() + "::" + templateName;
+        return templateName;
     }
 
     private Reader getReaderFromResource(OrchidResource resource) {

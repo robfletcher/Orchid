@@ -1,7 +1,7 @@
 <div class="orchid-javadoc">
-{% include 'includes/javadoc/package/summary' %}
-{% include 'includes/javadoc/package/classes' %}
+{% include page|templates('includes/javadoc/package/summary') %}
+{% include page|templates('includes/javadoc/package/classes') %}
 {% if page.innerPackages|length > 0 %}
-    {% include 'includes/javadoc/package/childPackages' %}
+    {% include page|templates('includes/javadoc/package/childPackages') %}
 {% endif %}
 </div>

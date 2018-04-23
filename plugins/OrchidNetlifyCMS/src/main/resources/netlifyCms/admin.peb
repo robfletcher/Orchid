@@ -5,21 +5,21 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Orchid Content Manager</title>
-{% include 'includes/styles' %}
+{% include page|templates('includes/styles') %}
     <link rel="stylesheet" href="https://unpkg.com/netlify-cms@^1.0.0/dist/cms.css" />
 </head>
 <body>
 <script src="https://unpkg.com/netlify-cms@^1.0.0/dist/cms.js"></script>
-{% include 'includes/netlifyCms/tagEditorComponents' with {"templateTags": page.templateTags} %}
-{% include 'includes/netlifyCms/componentWidgets' with {"components": page.components} %}
-{% include 'includes/netlifyCms/menuItemWidgets' with {"menuItems": page.menuItems} %}
+{% include page|templates('includes/netlifyCms/tagEditorComponents') with {"templateTags": page.templateTags} %}
+{% include page|templates('includes/netlifyCms/componentWidgets') with {"components": page.components} %}
+{% include page|templates('includes/netlifyCms/menuItemWidgets') with {"menuItems": page.menuItems} %}
 
 <script>
     CMS.registerWidget('componentHolder', 'list');
     CMS.registerWidget('orchidMenu', 'list');
 </script>
 
-{% include 'includes/scripts' %}
+{% include page|templates('includes/scripts') %}
 {% if page.isLocal() %}
 <!-- start:register backend -->
 <script>

@@ -1,4 +1,4 @@
-{% extends view.layout %}
+{% extends page|templates(view.layout) %}
 
 {% block mainContent %}
 {# @pebvariable name="view" type="com.eden.orchid.api.server.OrchidView" #}
@@ -19,7 +19,7 @@
     <li>
         <h3>{{ classType.simpleName }} Overview</h3>
         <p>{{ optionsExtractor.describeOptions(classType, false, false).classDescription }}</p>
-        {% include controller.getClassTypeOverviewTemplate(classType) %}
+        {% include page|templates(controller.getClassTypeOverviewTemplate(classType), false) %}
     </li>
 {% if optionsExtractor.hasOptions(classType, true, false) %}
     <li>

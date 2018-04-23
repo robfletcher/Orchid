@@ -1,15 +1,21 @@
 package com.eden.orchid.impl.compilers.sass;
 
+import com.eden.common.json.JSONElement;
 import com.eden.common.util.EdenPair;
+import com.eden.common.util.EdenUtils;
 import com.eden.orchid.api.OrchidContext;
 import com.eden.orchid.api.resources.resource.OrchidResource;
+import com.eden.orchid.api.theme.Theme;
 import com.eden.orchid.utilities.OrchidUtils;
 import io.bit3.jsass.importer.Import;
 import io.bit3.jsass.importer.Importer;
+import org.json.JSONObject;
 
 import javax.inject.Inject;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public final class SassImporter implements Importer {
 
@@ -43,13 +49,28 @@ public final class SassImporter implements Importer {
                 absoluteUri = absoluteUri.substring(1);
             }
 
-            OrchidResource importedResource = context.getResourceEntry("assets/css/" + absoluteUri);
+            //TODO: How do I get this theme key from here?
+//            String themeKey = "BsDoc";
+            Theme theme = context.findTheme();
+            OrchidResource importedResource = context.getResourceEntry(theme, "assets/css/" + absoluteUri);
 
             if (importedResource != null) {
                 String content = importedResource.getContent();
 
                 if (importedResource.shouldPrecompile()) {
-                    content = context.compile(importedResource.getPrecompilerExtension(), content, importedResource.getEmbeddedData());
+                    JSONElement el = importedResource.getEmbeddedData();
+                    Map<String, Object> data;
+                    if(EdenUtils.elementIsObject(el)) {
+                        JSONObject ob = (JSONObject) el.getElement();
+                        data = ob.toMap();
+                        data.put("theme", theme);
+                    }
+                    else {
+                        data = new HashMap<>();
+                        data.put("theme", theme);
+                    }
+
+                    content = context.compile(importedResource.getPrecompilerExtension(), content, data);
                 }
 
                 try {

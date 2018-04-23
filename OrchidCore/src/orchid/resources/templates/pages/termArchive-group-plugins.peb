@@ -1,4 +1,4 @@
-{% extends 'includes/termArchive-group-base' %}
+{% extends page|templates('includes/termArchive-group-base') %}
 
 {% block cardBody %}
 <div class="panel-body" style="height: 200px; overflow-y: scroll;">

@@ -131,7 +131,7 @@ public class OrchidView implements OptionsHolder, AssetHolder {
                 .map(s -> Clog.format("templates/server/admin/{}.peb", OrchidUtils.normalizePath(s)))
                 .collect(Collectors.toList());
 
-        OrchidResource resource = context.locateTemplate(null, viewList);
+        OrchidResource resource = context.locateTemplate("", viewList, false);
         if(resource != null) {
             Map<String, Object> data = new HashMap<>();
             data.put("view", this);
