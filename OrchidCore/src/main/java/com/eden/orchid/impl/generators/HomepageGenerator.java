@@ -81,7 +81,7 @@ public final class HomepageGenerator extends OrchidGenerator {
     }
 
     private OrchidPage getFavicon() {
-        OrchidResource resource = context.getResourceEntry("favicon.ico");
+        OrchidResource resource = context.getResourceEntry(null, "favicon.ico");
         OrchidPage page = null;
         if(resource != null) {
             page = new OrchidPage(resource, "favicon", context.getSite().getSiteInfo().getSiteName());

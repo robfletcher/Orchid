@@ -5,6 +5,7 @@ import com.eden.orchid.api.OrchidContext;
 import com.eden.orchid.api.resources.resource.OrchidResource;
 import com.eden.orchid.api.resources.resource.StringResource;
 import com.eden.orchid.api.server.OrchidResponse;
+import com.eden.orchid.api.theme.Theme;
 import com.eden.orchid.api.theme.assets.AssetHolder;
 import com.eden.orchid.api.theme.assets.AssetHolderDelegate;
 import com.eden.orchid.api.theme.assets.AssetPage;
@@ -36,6 +37,7 @@ public final class IndexFileResponse {
     }
 
     public OrchidResponse getResponse(File targetFile, String targetPath) {
+        Theme theme = context.getTheme(context.getDefaultTheme());
         String content = "";
 
         if (targetFile.isDirectory()) {
@@ -87,7 +89,7 @@ public final class IndexFileResponse {
                     newFile.put("icon", iconPage);
                 }
 
-                OrchidResource resource = context.getResourceEntry("templates/server/directoryListing.peb");
+                OrchidResource resource = context.getResourceEntry(theme, "templates/server/directoryListing.peb");
 
                 JSONObject indexPageVars = new JSONObject();
                 indexPageVars.put("title", "List of files/dirs under " + targetPath);

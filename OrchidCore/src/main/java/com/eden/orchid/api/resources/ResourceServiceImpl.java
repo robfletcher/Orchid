@@ -40,7 +40,6 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @since v1.0.0
@@ -48,8 +47,6 @@ import java.util.regex.Pattern;
  */
 @Singleton
 public final class ResourceServiceImpl implements ResourceService {
-
-    private final Pattern templatePattern = Pattern.compile("(?:(.*?)::)?(\\?)?(.*)");
 
     private OrchidContext context;
     private Set<FileResourceSource> fileResourceSources;
@@ -162,10 +159,10 @@ public final class ResourceServiceImpl implements ResourceService {
                 .orElse(null);
     }
 
-    @Override
-    public OrchidResource getResourceEntry(final String fileName) {
-        return getResourceEntry(null, fileName);
-    }
+//    @Override
+//    public OrchidResource getResourceEntry(final String fileName) {
+//        return getResourceEntry(null, fileName);
+//    }
 
     @Override
     public OrchidResource getResourceEntry(AbstractTheme theme, final String fileName) {
@@ -182,13 +179,13 @@ public final class ResourceServiceImpl implements ResourceService {
             resource = getLocalResourceEntry(fileName);
         }
 
-        // If not external, check for a resource in any specified local resource sources
+        // If nothing found in the local resource sources, check the theme
         if (resource == null) {
             if(theme != null) {
                 resource = theme.getResourceEntry(fileName);
             }
             else {
-                resource = context.findTheme().getResourceEntry(fileName);
+//                resource =  context.getTheme(context.getDefaultTheme()).getResourceEntry(fileName);
             }
         }
 
@@ -218,10 +215,10 @@ public final class ResourceServiceImpl implements ResourceService {
         return new ArrayList<>(entries.values());
     }
 
-    @Override
-    public List<OrchidResource> getResourceEntries(String path, String[] fileExtensions, boolean recursive) {
-        return getResourceEntries(null, path, fileExtensions, recursive);
-    }
+//    @Override
+//    public List<OrchidResource> getResourceEntries(String path, String[] fileExtensions, boolean recursive) {
+//        return getResourceEntries(null, path, fileExtensions, recursive);
+//    }
 
     @Override
     public List<OrchidResource> getResourceEntries(AbstractTheme theme, String path, String[] fileExtensions, boolean recursive) {
@@ -235,7 +232,7 @@ public final class ResourceServiceImpl implements ResourceService {
             addEntries(entries, Collections.singletonList(theme), path, fileExtensions, recursive);
         }
         else {
-            addEntries(entries, Collections.singletonList(context.findTheme()), path, fileExtensions, recursive);
+//            addEntries(entries, Collections.singletonList(context.getTheme(context.getDefaultTheme())), path, fileExtensions, recursive);
         }
 
         // add entries from other sources
@@ -407,16 +404,6 @@ public final class ResourceServiceImpl implements ResourceService {
         return getLocalResourceEntry(fullFileName);
     }
 
-    private OrchidResource locateSinglePage(String templateName, String extension) {
-        String fullFileName = OrchidUtils.normalizePath(templateName);
-
-        if(!fullFileName.contains(".")) {
-            fullFileName = fullFileName + "." + extension;
-        }
-
-        return context.getResourceEntry(fullFileName);
-    }
-
     @Override
     public OrchidResource locateTemplate(final String fileNames) {
         Matcher matcher = templatePattern.matcher(fileNames);
@@ -441,7 +428,7 @@ public final class ResourceServiceImpl implements ResourceService {
 
     @Override
     public OrchidResource locateTemplate(final String themeKey, final List<String> fileNames, final boolean ignoreMissing) {
-        Theme theme = context.findTheme(themeKey);
+        Theme theme = context.getTheme(themeKey);
 
         for(String template : fileNames) {
             OrchidResource resource = locateSingleTemplate(theme, template);
@@ -503,7 +490,7 @@ public final class ResourceServiceImpl implements ResourceService {
 
     @Override
     public OrchidResource locateResource(final String themeKey, final List<String> fileNames, final boolean ignoreMissing) {
-        Theme theme = context.findTheme(themeKey);
+        Theme theme = context.getTheme(themeKey);
 
         for(String template : fileNames) {
             OrchidResource resource = getResourceEntry(theme, OrchidUtils.normalizePath(template));

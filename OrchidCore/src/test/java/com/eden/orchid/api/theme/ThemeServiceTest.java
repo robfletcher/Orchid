@@ -31,16 +31,11 @@ public final class ThemeServiceTest {
 
     private GlobalAssetHolder globalAssetHolder;
 
-    private JSONObject theme2ContextOptions;
-    private JSONObject adminTheme2ContextOptions;
     private JSONObject themeContextOptions;
-    private JSONObject adminThemeContextOptions;
+    private JSONObject theme2ContextOptions;
 
     private Theme theme1;
     private Set<Theme> themes;
-
-    private AdminTheme adminTheme1;
-    private Set<AdminTheme> adminThemes;
 
     @BeforeMethod
     public void testSetup() {
@@ -49,33 +44,23 @@ public final class ThemeServiceTest {
         when(theme1.getKey()).thenReturn("theme1");
         themes.add(theme1);
 
-        adminTheme1 = mock(AdminTheme.class);
-        when(adminTheme1.getKey()).thenReturn("adminTheme1");
-        adminThemes = new HashSet<>();
-        adminThemes.add(adminTheme1);
-
         globalAssetHolder = mock(GlobalAssetHolder.class);
 
         themeContextOptions = new JSONObject();
         theme2ContextOptions = new JSONObject();
-        adminThemeContextOptions = new JSONObject();
-        adminTheme2ContextOptions = new JSONObject();
 
         // Mock Injector
         injector = mock(Injector.class);
         when(injector.getInstance((Class<Theme>) theme1.getClass())).thenReturn(theme1);
-        when(injector.getInstance((Class<AdminTheme>) adminTheme1.getClass())).thenReturn(adminTheme1);
 
         // Mock Context
         context = mock(OrchidContext.class);
         when(context.getInjector()).thenReturn(injector);
         when(context.query("theme")).thenReturn(new JSONElement(themeContextOptions));
         when(context.query("theme2")).thenReturn(new JSONElement(theme2ContextOptions));
-        when(context.query("adminTheme")).thenReturn(new JSONElement(adminThemeContextOptions));
-        when(context.query("adminTheme2")).thenReturn(new JSONElement(adminTheme2ContextOptions));
 
         // Create instance of Service Implementation
-        service = new ThemeServiceImpl(globalAssetHolder, () -> themes, "theme1", () -> adminThemes, "adminTheme1");
+        service = new ThemeServiceImpl(globalAssetHolder, () -> themes, "theme1", "adminTheme1");
         service.initialize(context);
 
         // Create wrapper around the Implementation to verify it works in composition

@@ -2,6 +2,7 @@ package com.eden.orchid.api.render;
 
 import com.eden.common.util.EdenUtils;
 import com.eden.orchid.api.OrchidContext;
+import com.eden.orchid.api.theme.Theme;
 import com.eden.orchid.api.theme.components.OrchidComponent;
 import com.eden.orchid.api.theme.pages.OrchidPage;
 import com.eden.orchid.utilities.OrchidUtils;
@@ -34,7 +35,7 @@ public final class DefaultTemplateResolutionStrategy extends TemplateResolutionS
             templateNames.add(page.getGenerator().getLayout());
         }
         templateNames.add("index");
-        return expandTemplateList(templateNames, "layouts");
+        return expandTemplateList(page.getTheme(), templateNames, "layouts");
     }
 
     @Override
@@ -46,9 +47,10 @@ public final class DefaultTemplateResolutionStrategy extends TemplateResolutionS
         templateNames.add(page.getKey());
         templateNames.add("page");
 
-        return expandTemplateList(templateNames, "pages");
+        return expandTemplateList(page.getTheme(), templateNames, "pages");
     }
 
+    @Override
     public List<String> getComponentTemplate(OrchidComponent component) {
         List<String> templateNames = new ArrayList<>();
         if(!EdenUtils.isEmpty(component.getTemplates())) {
@@ -56,12 +58,11 @@ public final class DefaultTemplateResolutionStrategy extends TemplateResolutionS
         }
         templateNames.add(component.getType());
 
-        return expandTemplateList(templateNames, "components");
+        return expandTemplateList(component.getPage().getTheme(), templateNames, "components");
     }
 
-    public List<String> expandTemplateList(final List<String> templates, final String templateBase) {
-        //TODO: Find out how to get the Page from here
-        String themePreferredExtension = context.get().findTheme().getPreferredTemplateExtension();
+    public List<String> expandTemplateList(Theme theme, final List<String> templates, final String templateBase) {
+        String themePreferredExtension = theme.getPreferredTemplateExtension();
         String defaultExtension = context.get().getSite().getDefaultTemplateExtension();
 
         return templates

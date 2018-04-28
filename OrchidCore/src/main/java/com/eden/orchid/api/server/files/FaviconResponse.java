@@ -3,6 +3,7 @@ package com.eden.orchid.api.server.files;
 import com.eden.orchid.api.OrchidContext;
 import com.eden.orchid.api.resources.resource.OrchidResource;
 import com.eden.orchid.api.server.OrchidResponse;
+import com.eden.orchid.api.theme.Theme;
 
 import javax.inject.Inject;
 import java.io.InputStream;
@@ -17,8 +18,9 @@ public final class FaviconResponse {
     }
 
     public OrchidResponse getResponse(String targetPath) {
+        Theme theme = context.getTheme(context.getDefaultTheme());
         try {
-            OrchidResource faviconResource = context.getResourceEntry("favicon.ico");
+            OrchidResource faviconResource = context.getResourceEntry(theme, "favicon.ico");
             if(faviconResource != null) {
                 InputStream is = faviconResource.getContentStream();
 

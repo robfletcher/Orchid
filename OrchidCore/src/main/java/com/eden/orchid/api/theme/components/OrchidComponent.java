@@ -36,7 +36,7 @@ public abstract class OrchidComponent extends Prioritized implements OptionsHold
     @Getter protected final AssetHolder assetHolder;
     private boolean hasAddedAssets;
 
-    @Setter protected OrchidPage page;
+    @Getter @Setter protected OrchidPage page;
 
     @Getter @Setter
     @Option

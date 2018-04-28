@@ -1,4 +1,4 @@
 staticPages:
-  layout: geopattern
+#  layout: geopattern
   searchIndices:
     - 'pages'

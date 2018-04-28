@@ -68,7 +68,7 @@ constructor(
         }
     }
 
-    class FeedPage constructor(context: OrchidContext, filename: String, val items: List<OrchidPage>) : OrchidPage(context.getResourceEntry("feeds/$filename.peb"), "rss") {
+    class FeedPage constructor(context: OrchidContext, filename: String, val items: List<OrchidPage>) : OrchidPage(context.getResourceEntry(null, "feeds/$filename.peb"), "rss") {
         init {
             this.reference.fileName = filename
             this.reference.path = ""

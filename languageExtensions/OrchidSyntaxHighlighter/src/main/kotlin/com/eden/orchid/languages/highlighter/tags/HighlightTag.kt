@@ -26,7 +26,7 @@ class HighlightTag @Inject
         try {
             val interpreter = PythonInterpreter()
 
-            val pygmentsScript: OrchidResource? = context.getResourceEntry("scripts/pygments/pygments.py")
+            val pygmentsScript: OrchidResource? = context.getResourceEntry(null, "scripts/pygments/pygments.py")
             val pythonScript = pygmentsScript?.content ?: ""
 
             // Set a variable with the content you want to work with

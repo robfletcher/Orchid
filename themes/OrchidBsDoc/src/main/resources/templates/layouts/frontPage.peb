@@ -1,4 +1,4 @@
-{% extends page|templates('layouts/trianglifyBase') %}
+{% extends page|templates('layouts/trianglifyBase,layouts/index') %}
 
 {% block baseJumbotron %}
     <div class="bs-docs-masthead" id="jumbotron">

@@ -1,5 +1,5 @@
 ---
-layout: frontPage
+#layout: frontPage
 relativePriority: 1.0
 components:
   - {type: 'template', templates: ['homepage-grid']}

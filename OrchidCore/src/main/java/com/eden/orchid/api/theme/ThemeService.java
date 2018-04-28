@@ -16,31 +16,24 @@ public interface ThemeService extends OrchidService {
         return getService(ThemeService.class).getGlobalAssetHolder();
     }
 
-    default Theme findTheme() {
-        return getService(ThemeService.class).findTheme();
+    default String getDefaultAdminTheme() {
+        return getService(ThemeService.class).getDefaultAdminTheme();
     }
 
-    default Theme findTheme(String themeKey) {
-        return getService(ThemeService.class).findTheme(themeKey);
+    default String getDefaultTheme() {
+        return getService(ThemeService.class).getDefaultTheme();
     }
 
-    default Theme findTheme(String themeKey, JSONObject data) {
-        return getService(ThemeService.class).findTheme(themeKey, data);
+    default Theme getTheme(String themeKey) {
+        return getService(ThemeService.class).getTheme(themeKey);
+    }
+
+    default Theme getTheme(String themeKey, JSONObject data) {
+        return getService(ThemeService.class).getTheme(themeKey, data);
     }
 
     default void clearThemes() {
         getService(ThemeService.class).clearThemes();
     }
 
-    default AdminTheme findAdminTheme() {
-        return getService(ThemeService.class).findAdminTheme();
-    }
-
-    default AdminTheme findAdminTheme(String themeKey) {
-        return getService(ThemeService.class).findAdminTheme(themeKey);
-    }
-
-    default AdminTheme findAdminTheme(String themeKey, JSONObject data) {
-        return getService(ThemeService.class).findAdminTheme(themeKey, data);
-    }
 }

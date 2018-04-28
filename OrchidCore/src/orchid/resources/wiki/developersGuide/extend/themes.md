@@ -1,7 +1,6 @@
 ---
 classnames:
   - AbstractTheme
-  - AdminTheme
   - Theme
 ---
 

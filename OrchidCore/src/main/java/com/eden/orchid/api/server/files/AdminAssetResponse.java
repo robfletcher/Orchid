@@ -4,7 +4,7 @@ import com.caseyjbrooks.clog.Clog;
 import com.eden.orchid.api.OrchidContext;
 import com.eden.orchid.api.resources.resource.OrchidResource;
 import com.eden.orchid.api.server.OrchidResponse;
-import com.eden.orchid.api.theme.AdminTheme;
+import com.eden.orchid.api.theme.Theme;
 import com.eden.orchid.api.theme.pages.OrchidPage;
 import org.apache.commons.io.FilenameUtils;
 
@@ -22,8 +22,7 @@ public final class AdminAssetResponse {
     }
 
     public OrchidResponse getResponse(File targetFile, String targetPath) {
-        //TODO: Find out how to get the View from here
-        AdminTheme theme = context.findAdminTheme();
+        Theme theme = context.getTheme(context.getDefaultAdminTheme());
 
         OrchidResource res = theme.getResourceEntry(targetPath);
         String mimeType = StaticFileResponse.mimeTypes.getOrDefault(FilenameUtils.getExtension(targetFile.getName()), "text/plain");

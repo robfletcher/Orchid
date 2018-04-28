@@ -5,6 +5,7 @@ import com.eden.orchid.api.OrchidContext;
 import com.eden.orchid.api.resources.resource.OrchidResource;
 import com.eden.orchid.api.resources.resource.StringResource;
 import com.eden.orchid.api.server.OrchidResponse;
+import com.eden.orchid.api.theme.Theme;
 import com.eden.orchid.api.theme.assets.AssetHolder;
 import com.eden.orchid.api.theme.assets.AssetHolderDelegate;
 import com.eden.orchid.api.theme.pages.OrchidPage;
@@ -27,6 +28,7 @@ public final class NotFound404Response {
     }
 
     public OrchidResponse getResponse(String targetPath) {
+        Theme theme = context.getTheme(context.getDefaultTheme());
         String content = "";
         Clog.i("Rendering 404: #{$1}", targetPath);
 
@@ -36,7 +38,7 @@ public final class NotFound404Response {
             page = new OrchidPage(resource, "404");
         }
         else {
-            resource = context.getResourceEntry("templates/server/404.peb");
+            resource = context.getResourceEntry(theme, "templates/server/404.peb");
 
             JSONObject indexPageVars = new JSONObject();
             indexPageVars.put("title", "Not Found - " + targetPath);

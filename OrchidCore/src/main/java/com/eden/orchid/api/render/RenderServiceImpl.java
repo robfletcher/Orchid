@@ -55,7 +55,7 @@ public class RenderServiceImpl implements RenderService {
         page.setCurrent(true);
 
         for (String template : strategy.getPageLayout(page)) {
-            OrchidResource templateResource = context.getResourceEntry(template);
+            OrchidResource templateResource = context.getResourceEntry(page.getTheme(), template);
             if (templateResource != null) {
                 String content = "" + context.compile(FilenameUtils.getExtension(template), templateResource.getContent(), page);
                 is = toStream(content);

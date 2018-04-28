@@ -22,7 +22,6 @@ import com.eden.orchid.api.server.admin.AdminList;
 import com.eden.orchid.api.tasks.OrchidCommand;
 import com.eden.orchid.api.tasks.OrchidTask;
 import com.eden.orchid.api.tasks.TaskServiceImpl;
-import com.eden.orchid.api.theme.AdminTheme;
 import com.eden.orchid.api.theme.Theme;
 import com.eden.orchid.api.theme.components.OrchidComponent;
 import com.eden.orchid.api.theme.menus.menuItem.OrchidMenuItem;
@@ -86,8 +85,6 @@ public final class ImplModule extends OrchidModule {
         // Themes
         addToSet(Theme.class,
                 DefaultTheme.class);
-
-        addToSet(AdminTheme.class);
 
         // Resource Sources
         addToSet(FileResourceSource.class,

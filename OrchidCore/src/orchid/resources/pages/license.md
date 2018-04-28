@@ -9,4 +9,7 @@ menu:
         order: 10
     wikiSections: 
         order: 1
+theme: Editorial
+#layout: index
 ---
+

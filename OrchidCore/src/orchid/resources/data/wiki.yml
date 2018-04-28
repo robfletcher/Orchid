@@ -3,6 +3,6 @@ sections:
   - 'userManual'
   - 'developersGuide'
 wikiPages:
-  layout: geopattern2
+#  layout: geopattern2
   searchIndices:
     - 'wiki'

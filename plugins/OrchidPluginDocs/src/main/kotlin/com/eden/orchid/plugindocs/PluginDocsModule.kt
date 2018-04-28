@@ -4,7 +4,7 @@ import com.eden.orchid.api.compilers.TemplateTag
 import com.eden.orchid.api.registration.OrchidModule
 import com.eden.orchid.api.resources.resourceSource.PluginResourceSource
 import com.eden.orchid.api.server.OrchidController
-import com.eden.orchid.api.theme.AdminTheme
+import com.eden.orchid.api.theme.Theme
 import com.eden.orchid.api.theme.components.OrchidComponent
 import com.eden.orchid.plugindocs.components.PluginDocsComponent
 import com.eden.orchid.plugindocs.controllers.AdminController
@@ -25,7 +25,7 @@ class PluginDocsModule : OrchidModule() {
         addToSet(OrchidController::class.java,
                 AdminController::class.java)
 
-        addToSet(AdminTheme::class.java,
+        addToSet(Theme::class.java,
                 DefaultAdminTheme::class.java)
     }
 

@@ -18,7 +18,6 @@ import com.eden.orchid.api.options.Extractor;
 import com.eden.orchid.api.options.OptionExtractor;
 import com.eden.orchid.api.options.OptionsExtractor;
 import com.eden.orchid.api.options.TemplateGlobal;
-import com.eden.orchid.api.options.extractors.AdminThemeOptionExtractor;
 import com.eden.orchid.api.options.extractors.AnyOptionExtractor;
 import com.eden.orchid.api.options.extractors.ArrayOptionExtractor;
 import com.eden.orchid.api.options.extractors.BooleanOptionExtractor;
@@ -85,7 +84,6 @@ public final class ApiModule extends OrchidModule {
                 OptionsHolderOptionExtractor.class,
                 RelationOptionExtractor.class,
                 ThemeOptionExtractor.class,
-                AdminThemeOptionExtractor.class,
 
                 AnyOptionExtractor.class,
                 ArrayOptionExtractor.class,

@@ -43,7 +43,7 @@ constructor(context: OrchidContext, private val model: FormsModel) : OrchidGener
     }
 
     private fun getFormsByDatafiles(forms: HashMap<String, Form>) {
-        val formsPages = context.getResourceEntries(OrchidUtils.normalizePath(baseDir), context.parserExtensions.toTypedArray(), false)
+        val formsPages = context.getResourceEntries(null, OrchidUtils.normalizePath(baseDir), context.parserExtensions.toTypedArray(), false)
         for (resource in formsPages) {
             resource.reference.isUsePrettyUrl = false
             val fileData = context.parse(resource.reference.extension, resource.content)
@@ -55,7 +55,7 @@ constructor(context: OrchidContext, private val model: FormsModel) : OrchidGener
 
     private fun getFormsWithSubmissionPages(forms: HashMap<String, Form>): List<OrchidPage> {
         val pages = ArrayList<OrchidPage>()
-        val formsPages = context.getResourceEntries(OrchidUtils.normalizePath(baseDir), context.compilerExtensions.toTypedArray(), false)
+        val formsPages = context.getResourceEntries(null, OrchidUtils.normalizePath(baseDir), context.compilerExtensions.toTypedArray(), false)
 
         if(!EdenUtils.isEmpty(formsPages)) {
             for (resource in formsPages) {

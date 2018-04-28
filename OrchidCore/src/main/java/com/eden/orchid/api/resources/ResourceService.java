@@ -7,6 +7,7 @@ import com.google.inject.ImplementedBy;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * @since v1.0.0
@@ -14,6 +15,8 @@ import java.util.List;
  */
 @ImplementedBy(ResourceServiceImpl.class)
 public interface ResourceService extends OrchidService {
+
+    Pattern templatePattern = Pattern.compile("(?:(.*?)::)?(\\?)?(.*)");
 
     default JSONObject getDatafile(final String fileName) {
         return getService(ResourceService.class).getDatafile(fileName);
@@ -27,9 +30,9 @@ public interface ResourceService extends OrchidService {
         return getService(ResourceService.class).getLocalResourceEntry(fileName);
     }
 
-    default OrchidResource getResourceEntry(final String fileName) {
-        return getService(ResourceService.class).getResourceEntry(fileName);
-    }
+//    default OrchidResource getResourceEntry(final String fileName) {
+//        return getService(ResourceService.class).getResourceEntry(fileName);
+//    }
 
     default OrchidResource getResourceEntry(AbstractTheme theme, final String fileName) {
         return getService(ResourceService.class).getResourceEntry(theme, fileName);
@@ -39,9 +42,9 @@ public interface ResourceService extends OrchidService {
         return getService(ResourceService.class).getLocalResourceEntries(path, fileExtensions, recursive);
     }
 
-    default List<OrchidResource> getResourceEntries(String path, String[] fileExtensions, boolean recursive) {
-        return getService(ResourceService.class).getResourceEntries(path, fileExtensions, recursive);
-    }
+//    default List<OrchidResource> getResourceEntries(String path, String[] fileExtensions, boolean recursive) {
+//        return getService(ResourceService.class).getResourceEntries(path, fileExtensions, recursive);
+//    }
 
     default List<OrchidResource> getResourceEntries(AbstractTheme theme, String path, String[] fileExtensions, boolean recursive) {
         return getService(ResourceService.class).getResourceEntries(theme, path, fileExtensions, recursive);
